@@ -12,7 +12,7 @@ The current version depends on Meteor. `meteor` will spawn a working server on l
 - HTML/CSS forked from [Creating a File Encryption App with JavaScript](http://tutorialzine.com/2013/11/javascript-file-encrypter/).
 - Code inspired by [oro-chat](https://github.com/MyBoon/oro-chat).
 
-# Related & noteable
+# Related &|| noteable
 - [My presentation slides](https://slides.com/pguth/peertransfer)
 - [sharedrop](https://github.com/cowbell/sharedrop)
 - [ShareFest](https://github.com/Peer5/ShareFest)
