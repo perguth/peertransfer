@@ -12,7 +12,7 @@ Ptr = function(callback) {
 }
 Ptr.prototype.connect = function(id) {
   log('Ptr.prototype.connect('+ id +')')
-  this.conn = this.peer.connect(id, {reliable: true})
+  this.conn = this.peer.connect(id)
 }
 Ptr.prototype.acceptConnections = function(callback) {
   log('Ptr.prototype.acceptConnections(...)')
