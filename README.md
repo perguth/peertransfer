@@ -16,3 +16,4 @@ The current version depends on Meteor. `meteor` will spawn a working server on l
 - [sharedrop](https://github.com/cowbell/sharedrop)
 - [ShareFest](https://github.com/Peer5/ShareFest)
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/)
+- [WebTorrent](https://github.com/feross/webtorrent)
