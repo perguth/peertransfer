@@ -1,4 +1,4 @@
-The current version depends on Meteor. `meteor` will spawn a working server on localhost.
+In-browser P2P-filetransfer in three simple steps: 1) Drop files into your browser. 2) Open the generated link on the second PC. 3) Download the files over a direct and encrypted line.
 
 # Limitations
 - Currently only files < 2MB can be transferred.
