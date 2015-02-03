@@ -1,0 +1,53 @@
+<!doctype html>
+<head>
+	<meta charset=utf-8>
+	<title>Peertransfer</title>
+	<meta name=viewport content='width=device-width, initial-scale=1'>
+	<link href=style.css rel=stylesheet>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,700' rel=stylesheet>
+</head>
+<body>
+	<!-- UI based on http://tutorialzine.com/2013/11/javascript-file-encrypter/ -->
+
+	<a class='back'></a>
+
+	<div id=stage>
+
+		<div id=step1>
+			<div class='content'>
+				<a class='button send magenta'>getting ready...</a>
+				<small>Send files peer-to-peer and end-to-end encrypted.</small><br>
+				<small>Host it yoursef! <a href=https://github.com/pguth/peertransfer class='github'>Github</a> has the source.</small>
+				<input type=file id=send-input />
+			</div>
+		</div>
+
+		<div id=step2>
+			<div class='content if-send'>
+				<input type=url class=url upload onClick=this.select(); placeholder=... just a second... /><br>
+				<small>Open this URL on any number of other computers to receive the file there.</small>
+			</div>
+
+
+			<div class='content if-receive'>
+				<a class='button receive red'>Receiving...</a>
+				<!--<small>The download dialog will open automatically.</small>-->
+			</div>
+
+		</div>
+
+		<div id=step3>
+			<div class='content'>
+				<a class='button browse blue'>Et voilà!</a>
+			</div>
+		</div>
+	</div>
+
+<!--
+	<footer>
+	</footer>
+-->
+	<script src=credentials.js></script>
+	<script src=node_modules/sjcl/sjcl.js></script>
+	<script src=bundle.js></script>
+</body>
