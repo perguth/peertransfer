@@ -1,6 +1,7 @@
 var Connection = require('./js/connection')
 var helpers = require('./js/helpers')
 var log = require('./js/debug')
+sjcl = require('sjcl')
 $ = require('jquery')
 
 DEBUG = true
