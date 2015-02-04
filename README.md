@@ -20,4 +20,4 @@ In-browser P2P-filetransfer in three simple steps: 1) Drop files into your brows
 - [WebTorrent](https://github.com/feross/webtorrent)
 
 ***
-![GNU Affero General Public License](https://www.gnu.org/graphics/agplv3-155x51.png)
+[![GNU Affero General Public License](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/why-affero-gpl.html)
