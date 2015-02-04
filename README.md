@@ -18,3 +18,6 @@ In-browser P2P-filetransfer in three simple steps: 1) Drop files into your brows
 - [ShareFest](https://github.com/Peer5/ShareFest)
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/)
 - [WebTorrent](https://github.com/feross/webtorrent)
+
+***
+![GNU Affero General Public License](https://www.gnu.org/graphics/agplv3-155x51.png)
