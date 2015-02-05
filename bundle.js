@@ -43,7 +43,7 @@ Connection.prototype.send = function(data) {
 Connection.prototype.putOwnID = function(selector) {
   log('Connection.prototype.putOwnID('+ selector +')')
   this.peer.on('open', function(id) {
-    $(selector).val(document.URL +'#'+ id +':'+ password)
+    $(selector).val(document.URL +'#'+ id +':'+ authCode +':'+ password)
   })
 }
 Connection.prototype.disconnect = function() {
@@ -103,19 +103,20 @@ exports.visualReadyStatus = function() {
     $('#step1 .button').toggleClass('browse')
   }, 100)
 }
-exports.generatePassword = function() {
-  return Math.random().toString(36).slice(-8) +
-    Math.random().toString(36).slice(-8)
+exports.generateRandomString = function() {
+  return Math.random().toString(36).slice(-8)
 }
-exports.getAnchorAndPassword = function() {
+exports.parseAnchor = function() {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
   anchor = (idx != -1) ? url.substring(idx+1) : ""
+  log('Anchor found: '+ anchor)
 
   if (anchor) {
-    anchor = anchor.split(':')
-    password = anchor[1]
-    anchor = anchor[0]
+    var parts = anchor.split(':')
+    password = parts[2]
+    authCode = parts[1]
+    peerID = parts[0]
   }
 }
 exports.binaryToBlob = function(decrypted) {
@@ -178,22 +179,25 @@ HOST = '0.peerjs.com'
 PORT = 9000
 SSL = false
 anchor = ''
+peerID = ''
 dataEnc = ''
 password = ''
-helpers.getAnchorAndPassword()
+authCode = ''
+helpers.parseAnchor()
 
 $(require('./js/events'))
 
 conn = new Connection(function() {
   if ( ! anchor) {
     helpers.visualReadyStatus()
-    password = helpers.generatePassword()
+    password = helpers.generateRandomString() + helpers.generateRandomString()
+    authCode = helpers.generateRandomString()
   }
 })
-conn.putOwnID('.url', password)
+conn.putOwnID('.url', authCode, password)
 
 if (anchor)  {
-  conn.connect(anchor)
+  conn.connect(peerID)
   conn.acceptData(function(enc) {
 
     decrypted = sjcl.decrypt(password, enc)
@@ -20715,7 +20719,7 @@ function getJSF(k1, k2) {
 utils.getJSF = getJSF;
 
 },{"bn.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/browserify-rsa/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/brorand/index.js":[function(require,module,exports){
 var r;
 
@@ -21932,7 +21936,7 @@ if (typeof Object.create === 'function') {
 }
 
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports={
+module.exports=module.exports=module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -22037,7 +22041,7 @@ module.exports = function evp(crypto, password, salt, keyLen) {
 };
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
+module.exports=module.exports=module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
 "2.16.840.1.101.3.4.1.4": "aes-128-cfb",
@@ -24019,7 +24023,7 @@ var encoders = exports;
 encoders.der = require('./der');
 
 },{"./der":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1/encoders/der.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/node_modules/inherits/inherits_browser.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/node_modules/minimalistic-assert/index.js":[function(require,module,exports){
@@ -24392,7 +24396,7 @@ module.exports = function (crypto, exports) {
 	};
 };
 },{"./ecdh":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/ecdh.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/lib/elliptic.js"][0].apply(exports,arguments)
 },{"../package.json":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/package.json","./elliptic/curve":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/curve/index.js","./elliptic/curves":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/curves.js","./elliptic/ec":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/ec/index.js","./elliptic/hmac-drbg":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/hmac-drbg.js","./elliptic/utils":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/utils.js","brorand":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/brorand/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/curve/base.js":[function(require,module,exports){
@@ -24418,7 +24422,7 @@ arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_module
 },{"../elliptic":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic.js","hash.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/lib/elliptic/utils.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/lib/elliptic/utils.js"][0].apply(exports,arguments)
 },{"bn.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/bn.js/lib/bn.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/brorand/index.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash.js":[function(require,module,exports){
@@ -24434,9 +24438,9 @@ arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_module
 },{"../hash":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js"][0].apply(exports,arguments)
 },{"inherits":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/inherits/inherits_browser.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/package.json":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/package.json"][0].apply(exports,arguments)
+module.exports=module.exports=arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/package.json"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-hash/browser.js":[function(require,module,exports){
 (function (Buffer){
 'use strict';
@@ -26052,7 +26056,7 @@ function findPrime(bits, gen) {
 
 }
 },{"bn.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","miller-rabin":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js","randombytes":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/randombytes/browser.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/lib/primes.json":[function(require,module,exports){
-module.exports={
+module.exports=module.exports=module.exports={
     "modp1": {
         "gen": "02",
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a63a3620ffffffffffffffff"
@@ -26087,7 +26091,7 @@ module.exports={
     }
 }
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js":[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
@@ -26205,7 +26209,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 };
 
 },{"bn.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","brorand":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/node_modules/brorand/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/node_modules/brorand/index.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/pbkdf2-compat/browser.js":[function(require,module,exports){
 (function (Buffer){
 var createHmac = require('create-hmac')
@@ -26313,15 +26317,15 @@ function i2ops(c) {
 }
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/browserify-rsa/index.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/browserify-rsa/index.js"][0].apply(exports,arguments)
 },{"bn.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/browserify-rsa/node_modules/bn.js/lib/bn.js","buffer":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/browserify-rsa/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/EVP_BytesToKey.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/EVP_BytesToKey.js"][0].apply(exports,arguments)
 },{"buffer":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
+module.exports=module.exports=arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/asn1.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/asn1.js"][0].apply(exports,arguments)
 },{"asn1.js":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1.js","asn1.js-rfc3280":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js-rfc3280/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/fixProc.js":[function(require,module,exports){
@@ -26355,9 +26359,9 @@ arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_module
 },{"../../asn1":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1.js","buffer":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js","inherits":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1/encoders/index.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1/encoders/index.js"][0].apply(exports,arguments)
 },{"./der":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1/encoders/der.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/node_modules/inherits/inherits_browser.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/node_modules/minimalistic-assert/index.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/node_modules/asn1.js/node_modules/minimalistic-assert/index.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/pemstrip/index.js":[function(require,module,exports){
@@ -26896,7 +26900,7 @@ function isUndefined(arg) {
 }
 
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/inherits/inherits_browser.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
@@ -28987,7 +28991,7 @@ function objectToString(o) {
 }
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/stream-browserify/node_modules/readable-stream/node_modules/inherits/inherits_browser.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/inherits/inherits_browser.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/watchify/node_modules/browserify/node_modules/stream-browserify/node_modules/readable-stream/node_modules/isarray/index.js":[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';

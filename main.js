@@ -10,22 +10,25 @@ HOST = '0.peerjs.com'
 PORT = 9000
 SSL = false
 anchor = ''
+peerID = ''
 dataEnc = ''
 password = ''
-helpers.getAnchorAndPassword()
+authCode = ''
+helpers.parseAnchor()
 
 $(require('./js/events'))
 
 conn = new Connection(function() {
   if ( ! anchor) {
     helpers.visualReadyStatus()
-    password = helpers.generatePassword()
+    password = helpers.generateRandomString() + helpers.generateRandomString()
+    authCode = helpers.generateRandomString()
   }
 })
-conn.putOwnID('.url', password)
+conn.putOwnID('.url', authCode, password)
 
 if (anchor)  {
-  conn.connect(anchor)
+  conn.connect(peerID)
   conn.acceptData(function(enc) {
 
     decrypted = sjcl.decrypt(password, enc)

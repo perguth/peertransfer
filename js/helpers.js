@@ -8,19 +8,20 @@ exports.visualReadyStatus = function() {
     $('#step1 .button').toggleClass('browse')
   }, 100)
 }
-exports.generatePassword = function() {
-  return Math.random().toString(36).slice(-8) +
-    Math.random().toString(36).slice(-8)
+exports.generateRandomString = function() {
+  return Math.random().toString(36).slice(-8)
 }
-exports.getAnchorAndPassword = function() {
+exports.parseAnchor = function() {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
   anchor = (idx != -1) ? url.substring(idx+1) : ""
+  log('Anchor found: '+ anchor)
 
   if (anchor) {
-    anchor = anchor.split(':')
-    password = anchor[1]
-    anchor = anchor[0]
+    var parts = anchor.split(':')
+    password = parts[2]
+    authCode = parts[1]
+    peerID = parts[0]
   }
 }
 exports.binaryToBlob = function(decrypted) {

@@ -42,7 +42,7 @@ Connection.prototype.send = function(data) {
 Connection.prototype.putOwnID = function(selector) {
   log('Connection.prototype.putOwnID('+ selector +')')
   this.peer.on('open', function(id) {
-    $(selector).val(document.URL +'#'+ id +':'+ password)
+    $(selector).val(document.URL +'#'+ id +':'+ authCode +':'+ password)
   })
 }
 Connection.prototype.disconnect = function() {
