@@ -49,13 +49,7 @@ exports.binaryToBlob = function(decrypted) {
 }
 exports.sendOnIncoming = function(ptr, file, password) {
   ptr.acceptConnections(function() {
-    var reader = new FileReader()
-    reader.onload = function(e){
-      log(e.target.result)
-      var enc = sjcl.encrypt(password, e.target.result)
-      ptr.send(enc)
-    };
-    reader.readAsDataURL(file)
+    transfer.outgoing(ptr, file, password)
   })
 }
 exports.step = function(i) {
