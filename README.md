@@ -1,4 +1,8 @@
-In-browser P2P-filetransfer in three simple steps: 1) Drop files into your browser. 2) Open the generated link on the second PC. 3) Download the files over a direct and encrypted line.
+In-browser secure P2P-filetransfer in *three simple steps:*
+
+1. Drop files into your browser.
+- Open the generated link on the second PC.
+- Download the files over a direct and encrypted line.
 
 # Limitations
 - Currently only files < ~10MB can be transferred (using [FF developer](https://www.mozilla.org/en-US/firefox/channel/#developer?utm_source=firefox-affiliates&utm_medium=banner&utm_campaign=aff-desktop-download-aurora)).
