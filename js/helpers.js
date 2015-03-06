@@ -65,26 +65,49 @@ helpers.sendOnIncoming = function(conn, file, password) {
 helpers.sendFileInChunks = function(conn, file, password) {
   log('helpers.sendFileInChunks()')
   var slice_method
-  file_size = file.size
+  var file_size = file.size
   log('File size: '+ file_size)
-  chunk_size = (1024 * 100) // 100KB
-  range_start = 0
-  range_end = chunk_size
-  while (range_end < file_size) {
+  var chunk_size = (1024 * 100) // 100KB
+  var range_start = 0
+  var range_end = chunk_size
+  var chunk
+  var index = 0
+  var done = false
+  transfer.outgoing(conn, {
+    index: index++,
+    file_name: file.name,
+    total: Math.ceil(file_size/chunk_size)
+  }, password)
+  while ( ! done) {
     log('Chunking while()')
     if (range_end > file_size) {
-      self.range_end = file_size
+      done = true
+      range_end = file_size
     }
-    log('Chunks:')
-    log(file.slice(range_start, range_end))
+    (helpers.blobToDataURL)( // TODO: need IIFE right?!
+      index++,
+      file.slice(range_start, range_end),
+      helpers.sendChunkObject)
 
     range_start += chunk_size
     range_end += chunk_size
+    if (range_end === file_size) done = true
   }
-
-  // regular functioning
-  //helpers.sendOnIncoming(conn, file, password)
-  transfer.outgoing(conn, file, password)
+}
+helpers.sendChunkObject = function(index, data) {
+  chunk = {
+    index: index,
+    data: data
+  }
+  transfer.outgoing(conn, chunk, password)
+}
+helpers.blobToDataURL = function(index, blob, callback) {
+  var reader = new FileReader()
+  reader.onload = function(e) {
+    log(e.target.result)
+    callback(index, e.target.result)
+  }
+  reader.readAsDataURL(blob)
 }
 
 module.exports = helpers

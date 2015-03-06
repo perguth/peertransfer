@@ -17,29 +17,68 @@ authCode = ''
 helpers.parseAnchor()
 
 transfer = {}
+var file_name
+var total
+var complete_file = 'data:application/octet-stream;base64,'
 transfer.incoming = function(enc) {
-  decrypted = sjcl.decrypt(password, enc)
+  log('transfer.incoming()')
+  var file = ''
+  decrypted = JSON.parse(sjcl.decrypt(password, enc))
 
-  if (helpers.checkValidity(decrypted)) {
-    url = helpers.binaryToBlob(decrypted)
-    $('#step3 a').attr('href', url)
-    helpers.step(3)
-    setTimeout(function() {
-      location.href = url // <-- Download!
-    }, 300)
+  if (decrypted.index === 0) {
+    file_name = decrypted.file_name
+    total = decrypted.total
+    log('Total chunks: '+ total)
   } else {
-    alert('Invalid pass phrase or file!')
-    helpers.step(1)
+    log('Receving chunk #'+ decrypted.index +' of '+ total)
+    log(decrypted)
+    if (helpers.checkValidity(decrypted.data)) {
+      if (decrypted.index < total)
+        complete_file += (decrypted.data.split(',')[1])
+      else {
+        complete_file += decrypted.data.split(',')[1]
+        /*
+        url = helpers.binaryToBlob(complete_file)
+        */
+        url = complete_file
+        $('#step3 a').attr('href', url)
+        helpers.step(3)
+        setTimeout(function() {
+          location.href = url // <-- Download!
+        }, 300)
+      }
+  /*
+      file += file.split(',')[1]
+
+      url = helpers.binaryToBlob(decrypted)
+      $('#step3 a').attr('href', url)
+      helpers.step(3)
+      setTimeout(function() {
+        location.href = url // <-- Download!
+      }, 300)
+  */
+    } else {
+      log(decrypted.chunk)
+      alert('Invalid pass phrase or file!')
+      helpers.step(1)
+    }
   }
 }
 transfer.outgoing = function(ptr, file, password) {
+  log('transfer.outgoing()')
+  log(file)
+
+  var enc = sjcl.encrypt(password, JSON.stringify(file))
+  ptr.send(enc)
+  /*
   var reader = new FileReader()
   reader.onload = function(e) {
     log(e.target.result)
     var enc = sjcl.encrypt(password, e.target.result)
     ptr.send(enc)
   }
-  reader.readAsDataURL(file)
+  reader.readAsDataURL(file.data)
+  */
 }
 
 // hook UI events:
