@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
 In-browser secure P2P-filetransfer in *three simple steps:*
 
 1. Drop files into your browser.
