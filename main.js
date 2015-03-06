@@ -34,14 +34,13 @@ transfer.incoming = function(enc) {
     log(decrypted)
     if (helpers.checkValidity(decrypted.data)) {
       if (decrypted.index < total)
-        complete_file += (decrypted.data.split(',')[1])
+        complete_file += decrypted.data.split(',')[1].slice(0, -2)
       else {
-        //complete_file += decrypted.data.split(',')[1]
-        /*
-        url = helpers.binaryToBlob(complete_file)
-        */
-        url = complete_file
-        $('#step3 a').attr('href', url).attr('download', file_name)
+        complete_file += decrypted.data.split(',')[1]
+        log('complete_file:')
+        log(complete_file)
+        $('#step3 a').attr('href', url = complete_file)
+          .attr('download', file_name)
         helpers.step(3)
         setTimeout(function() {
           document.getElementById('downloadLink').click()

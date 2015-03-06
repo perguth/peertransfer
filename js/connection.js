@@ -15,7 +15,7 @@ var Connection = function(callback) {
 }
 Connection.prototype.connect = function(id) {
   log('Connection.prototype.connect('+ id +')')
-  this.conn = this.peer.connect(id)
+  this.conn = this.peer.connect(id, {reliable: true})
 }
 Connection.prototype.acceptConnections = function(callback) {
   log('Connection.prototype.acceptConnections(...)')
