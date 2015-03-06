@@ -47,11 +47,6 @@ helpers.binaryToBlob = function(decrypted) {
   url = (window.webkitURL || window.URL).createObjectURL(blob)
   return url
 }
-helpers.sendOnIncoming = function(ptr, file, password) {
-  ptr.acceptConnections(function() {
-    transfer.outgoing(ptr, file, password)
-  })
-}
 helpers.step = function(i) {
   if (i == 1) back.fadeOut()
   else back.fadeIn()
@@ -62,34 +57,34 @@ helpers.checkValidity = function(file) {
     return false
   } else return true
 }
+helpers.sendOnIncoming = function(conn, file, password) {
+  conn.acceptConnections(function() {
+    helpers.sendFileInChunks(conn, file, password)
+  })
+}
 helpers.sendFileInChunks = function(conn, file, password) {
-  helpers.sendOnIncoming(conn, file, password)
+  log('helpers.sendFileInChunks()')
+  var slice_method
+  file_size = file.size
+  log('File size: '+ file_size)
+  chunk_size = (1024 * 100) // 100KB
+  range_start = 0
+  range_end = chunk_size
+  while (range_end < file_size) {
+    log('Chunking while()')
+    if (range_end > file_size) {
+      self.range_end = file_size
+    }
+    log('Chunks:')
+    log(file.slice(range_start, range_end))
 
+    range_start += chunk_size
+    range_end += chunk_size
+  }
 
-  /*
-    var slice_method
-    file_size = this.file.size
-    chunk_size = (1024 * 100) // 100KB
-    range_start = 0
-    range_end = chunk_size
-    if ('mozSlice' in file) {
-        slice_method = 'mozSlice'
-    }
-    else if ('webkitSlice' in file) {
-        slice_method = 'webkitSlice'
-    }
-    else {
-        slice_method = 'slice'
-    }
-    while (range_end < file_size) {
-      if (range_end > file_size) {
-        self.range_end = file_size
-      }
-      file[slice_method](range_start, range_end)
-      range_end += chunk_size
-    }
-
-    */
+  // regular functioning
+  //helpers.sendOnIncoming(conn, file, password)
+  transfer.outgoing(conn, file, password)
 }
 
 module.exports = helpers
