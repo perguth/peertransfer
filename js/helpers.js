@@ -1,6 +1,6 @@
-var exports = {}
+var helpers = {}
 
-exports.visualReadyStatus = function() {
+helpers.visualReadyStatus = function() {
   $('#step1 .button').attr('class', 'button green send')
   setTimeout(function() {
     $('#step1 .button').html('send a file')
@@ -8,10 +8,10 @@ exports.visualReadyStatus = function() {
     $('#step1 .button').toggleClass('browse')
   }, 100)
 }
-exports.generateRandomString = function() {
+helpers.generateRandomString = function() {
   return Math.random().toString(36).slice(-8)
 }
-exports.parseAnchor = function() {
+helpers.parseAnchor = function() {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
   anchor = (idx != -1) ? url.substring(idx+1) : ""
@@ -24,7 +24,7 @@ exports.parseAnchor = function() {
     peerID = parts[0]
   }
 }
-exports.binaryToBlob = function(decrypted) {
+helpers.binaryToBlob = function(decrypted) {
   // See http://stackoverflow.com/a/10473992
   var raw_data = atob(decrypted.split(',')[1])
   // Use typed arrays to convert the binary data to a Blob
@@ -47,20 +47,49 @@ exports.binaryToBlob = function(decrypted) {
   url = (window.webkitURL || window.URL).createObjectURL(blob)
   return url
 }
-exports.sendOnIncoming = function(ptr, file, password) {
+helpers.sendOnIncoming = function(ptr, file, password) {
   ptr.acceptConnections(function() {
     transfer.outgoing(ptr, file, password)
   })
 }
-exports.step = function(i) {
+helpers.step = function(i) {
   if (i == 1) back.fadeOut()
   else back.fadeIn()
   stage.css('top',(-(i-1)*100)+'%')
 }
-exports.checkValidity = function(file) {
+helpers.checkValidity = function(file) {
   if (!/^data:/.test(file)){
     return false
   } else return true
 }
+helpers.sendFileInChunks = function(conn, file, password) {
+  helpers.sendOnIncoming(conn, file, password)
 
-module.exports = exports
+
+  /*
+    var slice_method
+    file_size = this.file.size
+    chunk_size = (1024 * 100) // 100KB
+    range_start = 0
+    range_end = chunk_size
+    if ('mozSlice' in file) {
+        slice_method = 'mozSlice'
+    }
+    else if ('webkitSlice' in file) {
+        slice_method = 'webkitSlice'
+    }
+    else {
+        slice_method = 'slice'
+    }
+    while (range_end < file_size) {
+      if (range_end > file_size) {
+        self.range_end = file_size
+      }
+      file[slice_method](range_start, range_end)
+      range_end += chunk_size
+    }
+
+    */
+}
+
+module.exports = helpers

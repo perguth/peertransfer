@@ -12,9 +12,9 @@ var events = function(){
     $('#send-input').click()
   })
   $('#step1').on('change', '#send-input', function(e){
+    helpers.sendFileInChunks(conn, e.target.files[0], password)
     body.attr('class', 'send')
     helpers.step(2)
-    helpers.sendOnIncoming(conn, e.target.files[0], password)
   })
   back.click(function() { // The back button
     $('#step1 input[type=file]').replaceWith(function() {

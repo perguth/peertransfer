@@ -34,11 +34,11 @@ transfer.incoming = function(enc) {
 }
 transfer.outgoing = function(ptr, file, password) {
   var reader = new FileReader()
-  reader.onload = function(e){
+  reader.onload = function(e) {
     log(e.target.result)
     var enc = sjcl.encrypt(password, e.target.result)
     ptr.send(enc)
-  };
+  }
   reader.readAsDataURL(file)
 }
 
