@@ -36,15 +36,15 @@ transfer.incoming = function(enc) {
       if (decrypted.index < total)
         complete_file += (decrypted.data.split(',')[1])
       else {
-        complete_file += decrypted.data.split(',')[1]
+        //complete_file += decrypted.data.split(',')[1]
         /*
         url = helpers.binaryToBlob(complete_file)
         */
         url = complete_file
-        $('#step3 a').attr('href', url)
+        $('#step3 a').attr('href', url).attr('download', file_name)
         helpers.step(3)
         setTimeout(function() {
-          location.href = url // <-- Download!
+          document.getElementById('downloadLink').click()
         }, 300)
       }
   /*
