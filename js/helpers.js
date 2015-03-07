@@ -62,10 +62,9 @@ helpers.sendOnIncoming = function(conn, file, password) {
 }
 helpers.sendFileInChunks = function(conn, file, password) {
   log('helpers.sendFileInChunks()')
-  var slice_method
   var file_size = file.size
   log('File size: '+ file_size)
-  var chunk_size = (1024 * 100) // 100KB
+  var chunk_size = 16300 // Taken from PeeJS
   var range_start = 0
   var range_end = chunk_size
   var chunk
@@ -76,28 +75,32 @@ helpers.sendFileInChunks = function(conn, file, password) {
     file_name: file.name,
     total: Math.ceil(file_size/chunk_size)
   }, password)
-  while ( ! done) {
-    log('Chunking while()')
-    if (range_end > file_size) {
-      done = true
-      range_end = file_size
+  var sendChunkObject = function(index, data) {
+    chunk = {
+      index: index,
+      data: data
     }
-    (helpers.blobToDataURL)( // TODO: need IIFE right?!
-      index++,
-      file.slice(range_start, range_end),
-      helpers.sendChunkObject)
+    transfer.outgoing(conn, chunk, password)
+    loopOverChunks()
+  }
+  var loopOverChunks = function () {
+    if ( ! done) {
+      log('Chunking while()')
+      if (range_end > file_size) {
+        done = true
+        range_end = file_size
+      }
+      (helpers.blobToDataURL)( // TODO: need IIFE right?!
+        index++,
+        file.slice(range_start, range_end),
+        sendChunkObject)
 
-    range_start += chunk_size
-    range_end += chunk_size
-    if (range_end === file_size) done = true
+      range_start += chunk_size
+      range_end += chunk_size
+      if (range_end === file_size) done = true
+    }
   }
-}
-helpers.sendChunkObject = function(index, data) {
-  chunk = {
-    index: index,
-    data: data
-  }
-  transfer.outgoing(conn, chunk, password)
+  loopOverChunks()
 }
 helpers.blobToDataURL = function(index, blob, callback) {
   var reader = new FileReader()
