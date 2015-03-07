@@ -21,6 +21,7 @@ var file_name
 var total
 //var complete_file = 'data:application/octet-stream;base64,'
 var complete_file = []
+var counter = 1
 
 transfer.incoming = function(enc) {
   decrypted = JSON.parse(sjcl.decrypt(password, enc))
@@ -34,10 +35,11 @@ transfer.incoming = function(enc) {
     //log(decrypted)
     if (helpers.checkValidity(decrypted.data)) {
       var index = decrypted.index
-      if (index < total)
+      if (counter < total) {
         //complete_file += decrypted.data.split(',')[1].slice(0, -2)
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
-      else {
+        counter++
+      } else {
         //complete_file += decrypted.data.split(',')[1]
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
         var blob = new Blob(complete_file)
