@@ -1,4 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
+[![License](https://img.shields.io/badge/license-AGPL-blue.svg)](https://www.gnu.org/licenses/why-affero-gpl.html)
 [![Code Climate](https://codeclimate.com/github/pguth/peertransfer/badges/gpa.svg)](https://codeclimate.com/github/pguth/peertransfer)
 [![Test Coverage](https://codeclimate.com/github/pguth/peertransfer/badges/coverage.svg)](https://codeclimate.com/github/pguth/peertransfer)
 [![Gratipay](https://img.shields.io/gratipay/pguth.svg)](https://gratipay.com/pguth/)
