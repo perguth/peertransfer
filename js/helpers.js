@@ -1,6 +1,6 @@
 var helpers = {}
 
-helpers.visualReadyStatus = function() {
+helpers.visualReadyStatus = function () {
   $('#step1 .button').attr('class', 'button green send')
   setTimeout(function() {
     $('#step1 .button').html('send a file')
@@ -8,10 +8,10 @@ helpers.visualReadyStatus = function() {
     $('#step1 .button').toggleClass('browse')
   }, 100)
 }
-helpers.generateRandomString = function() {
+helpers.generateRandomString = function () {
   return Math.random().toString(36).slice(-8)
 }
-helpers.parseAnchor = function() {
+helpers.parseAnchor = function () {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
   anchor = (idx != -1) ? url.substring(idx+1) : ""
@@ -24,7 +24,7 @@ helpers.parseAnchor = function() {
     peerID = parts[0]
   }
 }
-helpers.binaryToBlob = function(data) {
+helpers.binaryToBlob = function (data) {
   // See http://stackoverflow.com/a/10473992
   var raw_data = atob(data.split(',')[1])
   // Use typed arrays to convert the binary data to a Blob
@@ -45,22 +45,22 @@ helpers.binaryToBlob = function(data) {
   }
   return blob
 }
-helpers.step = function(i) {
+helpers.step = function (i) {
   if (i == 1) back.fadeOut()
   else back.fadeIn()
   stage.css('top',(-(i-1)*100)+'%')
 }
-helpers.checkValidity = function(file) {
+helpers.checkValidity = function (file) {
   if (!/^data:/.test(file)){
     return false
   } else return true
 }
-helpers.sendOnIncoming = function(conn, file, password) {
+helpers.sendOnIncoming = function (conn, file, password) {
   conn.acceptConnections(function() {
     helpers.sendFileInChunks(conn, file, password)
   })
 }
-helpers.sendFileInChunks = function(conn, file, password) {
+helpers.sendFileInChunks = function (conn, file, password) {
   log('helpers.sendFileInChunks()')
   var file_size = file.size
   log('File size: '+ file_size)
@@ -102,7 +102,7 @@ helpers.sendFileInChunks = function(conn, file, password) {
   }
   loopOverChunks()
 }
-helpers.blobToDataURL = function(index, blob, callback) {
+helpers.blobToDataURL = function (index, blob, callback) {
   var reader = new FileReader()
   reader.onload = function(e) {
     log(e.target.result)

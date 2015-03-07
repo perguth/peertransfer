@@ -49,6 +49,7 @@ transfer.incoming = function(enc) {
         setTimeout(function() {
           document.getElementById('downloadLink').click()
         }, 300)
+        complete_file = []
       }
   /*
       file += file.split(',')[1]
