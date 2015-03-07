@@ -19,27 +19,31 @@ helpers.parseAnchor()
 transfer = {}
 var file_name
 var total
-var complete_file = 'data:application/octet-stream;base64,'
+//var complete_file = 'data:application/octet-stream;base64,'
+var complete_file = []
+
 transfer.incoming = function(enc) {
-  log('transfer.incoming()')
-  var file = ''
   decrypted = JSON.parse(sjcl.decrypt(password, enc))
 
   if (decrypted.index === 0) {
     file_name = decrypted.file_name
     total = decrypted.total
-    log('Total chunks: '+ total)
+    log('Total Chunks: '+ total)
   } else {
     log('Receving chunk #'+ decrypted.index +' of '+ total)
-    log(decrypted)
+    //log(decrypted)
     if (helpers.checkValidity(decrypted.data)) {
-      if (decrypted.index < total)
-        complete_file += decrypted.data.split(',')[1].slice(0, -2)
+      var index = decrypted.index
+      if (index < total)
+        //complete_file += decrypted.data.split(',')[1].slice(0, -2)
+        complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
       else {
-        complete_file += decrypted.data.split(',')[1]
-        log('complete_file:')
-        log(complete_file)
-        $('#step3 a').attr('href', url = complete_file)
+        //complete_file += decrypted.data.split(',')[1]
+        complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
+        var blob = new Blob(complete_file)
+        url = (window.webkitURL || window.URL).createObjectURL(blob)
+        log(url)
+        $('#step3 a').attr('href', url)
           .attr('download', file_name)
         helpers.step(3)
         setTimeout(function() {
@@ -65,10 +69,9 @@ transfer.incoming = function(enc) {
 }
 transfer.outgoing = function(ptr, file, password) {
   log('transfer.outgoing()')
-  log(file)
+  //log(file)
 
-  var enc = sjcl.encrypt(password, JSON.stringify(file))
-  ptr.send(enc)
+  ptr.send(sjcl.encrypt(password, JSON.stringify(file)))
   /*
   var reader = new FileReader()
   reader.onload = function(e) {

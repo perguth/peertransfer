@@ -24,9 +24,9 @@ helpers.parseAnchor = function() {
     peerID = parts[0]
   }
 }
-helpers.binaryToBlob = function(decrypted) {
+helpers.binaryToBlob = function(data) {
   // See http://stackoverflow.com/a/10473992
-  var raw_data = atob(decrypted.split(',')[1])
+  var raw_data = atob(data.split(',')[1])
   // Use typed arrays to convert the binary data to a Blob
   var arraybuffer = new ArrayBuffer(raw_data.length)
   var view = new Uint8Array(arraybuffer)
@@ -43,9 +43,7 @@ helpers.binaryToBlob = function(decrypted) {
     bb.append(arraybuffer)
     var blob = bb.getBlob('application/octet-stream') // <-- Here's the Blob
   }
-  // Use the URL object to create a temporary URL
-  url = (window.webkitURL || window.URL).createObjectURL(blob)
-  return url
+  return blob
 }
 helpers.step = function(i) {
   if (i == 1) back.fadeOut()

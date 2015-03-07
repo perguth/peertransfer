@@ -17,7 +17,7 @@ var events = function(){
     helpers.step(2)
   })
   back.click(function() { // The back button
-    $('#step1 input[type=file]').replaceWith(function() {
+    $('#send-input').replaceWith(function() {
       return $(this).clone() // Reinitialize the hidden file input
     })
     if (anchor) {
