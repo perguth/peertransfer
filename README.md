@@ -1,4 +1,6 @@
-[![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer) [![Code Climate](https://codeclimate.com/github/pguth/peertransfer/badges/gpa.svg)](https://codeclimate.com/github/pguth/peertransfer) [![Test Coverage](https://codeclimate.com/github/pguth/peertransfer/badges/coverage.svg)](https://codeclimate.com/github/pguth/peertransfer)
+[![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
+[![Code Climate](https://codeclimate.com/github/pguth/peertransfer/badges/gpa.svg)](https://codeclimate.com/github/pguth/peertransfer)
+[![Test Coverage](https://codeclimate.com/github/pguth/peertransfer/badges/coverage.svg)](https://codeclimate.com/github/pguth/peertransfer)
 [![Gratipay](https://img.shields.io/gratipay/pguth.svg)](https://gratipay.com/pguth/)
 [![Flattr](https://raw.githubusercontent.com/balupton/flattr-buttons/master/badge-93x20.png)](https://flattr.com/thing/1583b1a2c05938cc9d945a6b18cea23c)
 
@@ -11,7 +13,6 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - Download the files over a direct and encrypted line.
 
 # Limitations
-- Currently only files < ~10MB can be transferred (using [FF developer](https://www.mozilla.org/en-US/firefox/channel/#developer?utm_source=firefox-affiliates&utm_medium=banner&utm_campaign=aff-desktop-download-aurora)).
 - Encrypted data will not be cached in case of multiple transfers.
 
 # Tech in focus
@@ -30,4 +31,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - [WebTorrent](https://github.com/feross/webtorrent)
 
 ***
+
 [![GNU Affero General Public License](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/why-affero-gpl.html)
+[![js-standard-style](https://raw.githubusercontent.com/feross/standard/master/badge.png)](https://github.com/feross/standard)
+[![Developer using Firefox Developer](https://affiliates.mozilla.org/media/uploads/image_banners/a47240839834560ba213f2ed7df82697d6bc7766.png)](https://www.mozilla.org/en-US/firefox/channel/#developer?utm_source=firefox-affiliates&utm_medium=banner&utm_campaign=aff-desktop-download-aurora)
