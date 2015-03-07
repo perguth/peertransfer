@@ -1,3 +1,6 @@
+[![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
+# Peertransfer
+
 In-browser secure P2P-filetransfer in *three simple steps:*
 
 1. Drop files into your browser.
@@ -9,7 +12,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - Encrypted data will not be cached in case of multiple transfers.
 
 # Tech in focus
-- [PeerJS](https://github.com/peers/peerjs)
+- WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs)
 - [Stanford Javascript Crypto Library](https://github.com/bitwiseshiftleft/sjcl)
 
 # Influences & sources
