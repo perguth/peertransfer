@@ -21,10 +21,14 @@ Connection.prototype.acceptConnections = function(callback) {
   log('Connection.prototype.acceptConnections(...)')
   var that = this
   this.peer.on('connection', function(conn) {
+    log('Incoming: '+ that.conn.peer)
     that.conn = conn
     that.conn.on('open', function() {
-      log('Incoming: '+ that.conn.peer)
-      callback()
+      that.conn.on('data', function (receivedAuthCode) {
+        log("Auth Code received: "+ receivedAuthCode)
+        if (receivedAuthCode === authCode) callback()
+        else log('authCode rejected')
+      })
     })
   })
 }
@@ -32,6 +36,7 @@ Connection.prototype.acceptData = function(callback) {
   log('Connection.prototype.acceptData()')
   var that = this
   this.conn.on('open', function() {
+    that.conn.send(authCode)
     that.conn.on('data', callback)
   })
 }
