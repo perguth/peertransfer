@@ -31,6 +31,9 @@ transfer.incoming = function(enc) {
     file_name = decrypted.file_name
     total = decrypted.total
     log('Total Chunks: '+ total)
+    $('#step2 .button').css('background-repeat', 'no-repeat')
+    $('#step2 .button').css('background-position', '-240px 0')
+    $('#step2 .button').css('background-image', 'url(green.png)')
   } else {
     log('Receving chunk #'+ decrypted.index +' of '+ total)
     //log(decrypted)
@@ -40,6 +43,8 @@ transfer.incoming = function(enc) {
         //complete_file += decrypted.data.split(',')[1].slice(0, -2)
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
         counter++
+        $('#step2 .button').css('background-position',
+          '-'+ Math.ceil(240 - counter/total * 240) +'px 0')
       } else {
         //complete_file += decrypted.data.split(',')[1]
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
