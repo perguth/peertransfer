@@ -12,6 +12,10 @@ var Connection = function(callback) {
     debug: DEBUG? 2:0,
   })
   this.peer.on('open', callback)
+  this.peer.on('error', function () {
+    $('footer').css('opacity', '1')
+    $('footer').html("Could not connect. <a href= onClick='javascript:location.reload()'>Retry?</a>")
+  })
 }
 Connection.prototype.connect = function(id) {
   log('Connection.prototype.connect('+ id +')')
