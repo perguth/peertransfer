@@ -88,7 +88,7 @@ helpers.sendFileInChunks = function (conn, file, password) {
     loopOverChunks()
   }
   var loopOverChunks = function () {
-    if ( ! done) {
+    if ( ! done && stopTransfer() === false) {
       log('Chunking while()')
       if (range_end > file_size) {
         done = true
@@ -113,6 +113,16 @@ helpers.blobToDataURL = function (index, blob, callback) {
     callback(index, e.target.result)
   }
   reader.readAsDataURL(blob)
+}
+helpers.connectToBroker = function (reconnect) {
+  conn = new Connection(function() {
+    if ( ! anchor && ! (reconnect === 'reconnect')) {
+      helpers.visualReadyStatus()
+      password = helpers.generateRandomString() + helpers.generateRandomString()
+      authCode = helpers.generateRandomString()
+    }
+  })
+  conn.putOwnID('.url', authCode, password)
 }
 
 module.exports = helpers

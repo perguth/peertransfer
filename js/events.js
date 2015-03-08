@@ -15,6 +15,8 @@ var events = function(){
     helpers.step(2)
   })
   back.click(function() { // The back button
+    stopTransfer = function () { return true }
+    helpers.connectToBroker('reconnect')
     $('#send-input').replaceWith(function() {
       return $(this).clone() // Reinitialize the hidden file input
     })

@@ -1,4 +1,4 @@
-var Connection = require('./js/connection')
+Connection = require('./js/connection')
 var helpers = require('./js/helpers')
 var log = require('./js/debug')
 sjcl = require('sjcl')
@@ -15,6 +15,7 @@ dataEnc = ''
 password = ''
 authCode = ''
 helpers.parseAnchor()
+stopTransfer = function () { return false }
 
 transfer = {}
 var file_name
@@ -90,14 +91,7 @@ transfer.outgoing = function(ptr, file, password) {
 $(require('./js/events'))
 
 // connect to broker server:
-conn = new Connection(function() {
-  if ( ! anchor) {
-    helpers.visualReadyStatus()
-    password = helpers.generateRandomString() + helpers.generateRandomString()
-    authCode = helpers.generateRandomString()
-  }
-})
-conn.putOwnID('.url', authCode, password)
+helpers.connectToBroker()
 
 // if receiver, connect to sender and receive data:
 if (anchor) {
