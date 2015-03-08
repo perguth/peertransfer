@@ -21,9 +21,9 @@ Connection.prototype.acceptConnections = function(callback) {
   log('Connection.prototype.acceptConnections(...)')
   var that = this
   this.peer.on('connection', function(conn) {
-    log('Incoming: '+ that.conn.peer)
     that.conn = conn
     that.conn.on('open', function() {
+      log('Incoming: '+ that.conn.peer)
       that.conn.on('data', function (receivedAuthCode) {
         log("Auth Code received: "+ receivedAuthCode)
         if (receivedAuthCode === authCode) callback()
