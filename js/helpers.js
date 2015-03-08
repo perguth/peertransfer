@@ -116,11 +116,12 @@ helpers.blobToDataURL = function (index, blob, callback) {
 }
 helpers.connectToBroker = function (reconnect) {
   conn = new Connection(function() {
-    if ( ! anchor && ! (reconnect === 'reconnect')) {
+    if ( ! anchor && ! reconnect) {
       helpers.visualReadyStatus()
       password = helpers.generateRandomString() + helpers.generateRandomString()
       authCode = helpers.generateRandomString()
     }
+    if (reconnect) stopTransfer = function () { return false }
   })
   conn.putOwnID('.url', authCode, password)
 }
