@@ -1,6 +1,10 @@
 var helpers = {}
 
 helpers.visualReadyStatus = function () {
+  $('#step1 .button').css('cursor', 'pointer')
+  $('#step1 .button').click(function () {
+    $('#send-input').click()
+  })
   $('#step1 .button').attr('class', 'button green send')
   setTimeout(function() {
     $('#step1 .button').html('send a file')

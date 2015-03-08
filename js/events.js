@@ -8,9 +8,7 @@ var events = function(){
   var file = null
   var url = ''
 
-  $('#step1 .button').click(function(){
-    $('#send-input').click()
-  })
+  $('#step1 .button').css('cursor', 'default')
   $('#step1').on('change', '#send-input', function(e){
     helpers.sendOnIncoming(conn, e.target.files[0], password)
     body.attr('class', 'send')
