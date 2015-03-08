@@ -33,6 +33,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 ***
 
-[![GNU Affero General Public License](https://www.gnu.org/graphics/agplv3-155x51.png)](https://www.gnu.org/licenses/why-affero-gpl.html)
+[![GNU Affero General Public License](https://www.gnu.org/graphics/agplv3-155x51.png)](http://zedshaw.com/archive/why-i-algpl/)
 [![js-standard-style](https://raw.githubusercontent.com/feross/standard/master/badge.png)](https://github.com/feross/standard)
 [![Developer using Firefox Developer](https://affiliates.mozilla.org/media/uploads/image_banners/a47240839834560ba213f2ed7df82697d6bc7766.png)](https://www.mozilla.org/en-US/firefox/channel/#developer?utm_source=firefox-affiliates&utm_medium=banner&utm_campaign=aff-desktop-download-aurora)
+[![soma fm: DEF CON Radio](http://somafm.com/img/defcon120.png)](http://somafm.com/player/#/now-playing/defcon)
