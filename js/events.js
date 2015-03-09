@@ -13,7 +13,7 @@ var events = function(){
     $('footer').css('opacity', '1')
     $('footer').html("You need to use HTTP. This is just as secure since we use end-to-end encryption. <a href='' id=reloadUsingHTTP>Use HTTP</a>")
     $('#reloadUsingHTTP').prop('href',
-      'http://' + url.split(':///')[1]
+      'http://' + url.split('://')[1]
     )
   }
 
