@@ -13,6 +13,10 @@ var Connection = function(callback) {
     debug: DEBUG? 2:0,
   })
   this.peer.on('open', callback)
+  this.peer.on('error', function () {
+    $('footer').css('opacity', '1')
+    $('footer').html("Could not connect. <a href= onClick='javascript:location.reload()'>Retry?</a>")
+  })
 }
 Connection.prototype.connect = function(id) {
   log('Connection.prototype.connect('+ id +')')
@@ -25,7 +29,11 @@ Connection.prototype.acceptConnections = function(callback) {
     that.conn = conn
     that.conn.on('open', function() {
       log('Incoming: '+ that.conn.peer)
-      callback()
+      that.conn.on('data', function (receivedAuthCode) {
+        log("Auth Code received: "+ receivedAuthCode)
+        if (receivedAuthCode === authCode) callback()
+        else log('authCode rejected')
+      })
     })
   })
 }
@@ -33,6 +41,7 @@ Connection.prototype.acceptData = function(callback) {
   log('Connection.prototype.acceptData()')
   var that = this
   this.conn.on('open', function() {
+    that.conn.send(authCode)
     that.conn.on('data', callback)
   })
 }
@@ -70,15 +79,24 @@ var events = function(){
   var file = null
   var url = ''
 
-  $('#step1 .button').click(function(){
-    $('#send-input').click()
-  })
+  var url = location.href
+  if ( ! SSL && url.split('://')[0] === 'https') {
+    $('footer').css('opacity', '1')
+    $('footer').html("You need to use HTTP. This is just as secure since we use end-to-end encryption. <a href='' id=reloadUsingHTTP>Use HTTP</a>")
+    $('#reloadUsingHTTP').prop('href',
+      'http://' + url.split(':///')[1]
+    )
+  }
+
+  $('#step1 .button').css('cursor', 'default')
   $('#step1').on('change', '#send-input', function(e){
     helpers.sendOnIncoming(conn, e.target.files[0], password)
     body.attr('class', 'send')
     helpers.step(2)
   })
   back.click(function() { // The back button
+    stopTransfer = function () { return true }
+    helpers.connectToBroker('reconnect')
     $('#send-input').replaceWith(function() {
       return $(this).clone() // Reinitialize the hidden file input
     })
@@ -95,7 +113,11 @@ module.exports = events
 },{"./helpers":"/home/pguth/Studies/Peertransfer/peertransfer/js/helpers.js"}],"/home/pguth/Studies/Peertransfer/peertransfer/js/helpers.js":[function(require,module,exports){
 var helpers = {}
 
-helpers.visualReadyStatus = function() {
+helpers.visualReadyStatus = function () {
+  $('#step1 .button').css('cursor', 'pointer')
+  $('#step1 .button').click(function () {
+    $('#send-input').click()
+  })
   $('#step1 .button').attr('class', 'button green send')
   setTimeout(function() {
     $('#step1 .button').html('send a file')
@@ -103,10 +125,10 @@ helpers.visualReadyStatus = function() {
     $('#step1 .button').toggleClass('browse')
   }, 100)
 }
-helpers.generateRandomString = function() {
+helpers.generateRandomString = function () {
   return Math.random().toString(36).slice(-8)
 }
-helpers.parseAnchor = function() {
+helpers.parseAnchor = function () {
   var url = window.location.href.toString()
   var idx = url.indexOf("#")
   anchor = (idx != -1) ? url.substring(idx+1) : ""
@@ -119,7 +141,7 @@ helpers.parseAnchor = function() {
     peerID = parts[0]
   }
 }
-helpers.binaryToBlob = function(data) {
+helpers.binaryToBlob = function (data) {
   // See http://stackoverflow.com/a/10473992
   var raw_data = atob(data.split(',')[1])
   // Use typed arrays to convert the binary data to a Blob
@@ -140,22 +162,22 @@ helpers.binaryToBlob = function(data) {
   }
   return blob
 }
-helpers.step = function(i) {
+helpers.step = function (i) {
   if (i == 1) back.fadeOut()
   else back.fadeIn()
   stage.css('top',(-(i-1)*100)+'%')
 }
-helpers.checkValidity = function(file) {
+helpers.checkValidity = function (file) {
   if (!/^data:/.test(file)){
     return false
   } else return true
 }
-helpers.sendOnIncoming = function(conn, file, password) {
+helpers.sendOnIncoming = function (conn, file, password) {
   conn.acceptConnections(function() {
     helpers.sendFileInChunks(conn, file, password)
   })
 }
-helpers.sendFileInChunks = function(conn, file, password) {
+helpers.sendFileInChunks = function (conn, file, password) {
   log('helpers.sendFileInChunks()')
   var file_size = file.size
   log('File size: '+ file_size)
@@ -179,7 +201,7 @@ helpers.sendFileInChunks = function(conn, file, password) {
     loopOverChunks()
   }
   var loopOverChunks = function () {
-    if ( ! done) {
+    if ( ! done && stopTransfer() === false) {
       log('Chunking while()')
       if (range_end > file_size) {
         done = true
@@ -197,7 +219,7 @@ helpers.sendFileInChunks = function(conn, file, password) {
   }
   loopOverChunks()
 }
-helpers.blobToDataURL = function(index, blob, callback) {
+helpers.blobToDataURL = function (index, blob, callback) {
   var reader = new FileReader()
   reader.onload = function(e) {
     log(e.target.result)
@@ -205,11 +227,22 @@ helpers.blobToDataURL = function(index, blob, callback) {
   }
   reader.readAsDataURL(blob)
 }
+helpers.connectToBroker = function (reconnect) {
+  conn = new Connection(function() {
+    if ( ! anchor && ! reconnect) {
+      helpers.visualReadyStatus()
+      password = helpers.generateRandomString() + helpers.generateRandomString()
+      authCode = helpers.generateRandomString()
+    }
+    if (reconnect) stopTransfer = function () { return false }
+  })
+  conn.putOwnID('.url', authCode, password)
+}
 
 module.exports = helpers
 
 },{}],"/home/pguth/Studies/Peertransfer/peertransfer/main.js":[function(require,module,exports){
-var Connection = require('./js/connection')
+Connection = require('./js/connection')
 var helpers = require('./js/helpers')
 var log = require('./js/debug')
 sjcl = require('sjcl')
@@ -226,12 +259,14 @@ dataEnc = ''
 password = ''
 authCode = ''
 helpers.parseAnchor()
+stopTransfer = function () { return false }
 
 transfer = {}
 var file_name
 var total
 //var complete_file = 'data:application/octet-stream;base64,'
 var complete_file = []
+var counter = 1
 
 transfer.incoming = function(enc) {
   decrypted = JSON.parse(sjcl.decrypt(password, enc))
@@ -240,15 +275,21 @@ transfer.incoming = function(enc) {
     file_name = decrypted.file_name
     total = decrypted.total
     log('Total Chunks: '+ total)
+    $('#step2 .button').css('background-repeat', 'no-repeat')
+    $('#step2 .button').css('background-position', '-240px 0')
+    $('#step2 .button').css('background-image', 'url(green.png)')
   } else {
     log('Receving chunk #'+ decrypted.index +' of '+ total)
     //log(decrypted)
     if (helpers.checkValidity(decrypted.data)) {
       var index = decrypted.index
-      if (index < total)
+      if (counter < total) {
         //complete_file += decrypted.data.split(',')[1].slice(0, -2)
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
-      else {
+        counter++
+        $('#step2 .button').css('background-position',
+          '-'+ Math.ceil(240 - counter/total * 240) +'px 0')
+      } else {
         //complete_file += decrypted.data.split(',')[1]
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
         var blob = new Blob(complete_file)
@@ -260,6 +301,7 @@ transfer.incoming = function(enc) {
         setTimeout(function() {
           document.getElementById('downloadLink').click()
         }, 300)
+        complete_file = []
       }
   /*
       file += file.split(',')[1]
@@ -298,14 +340,7 @@ transfer.outgoing = function(ptr, file, password) {
 $(require('./js/events'))
 
 // connect to broker server:
-conn = new Connection(function() {
-  if ( ! anchor) {
-    helpers.visualReadyStatus()
-    password = helpers.generateRandomString() + helpers.generateRandomString()
-    authCode = helpers.generateRandomString()
-  }
-})
-conn.putOwnID('.url', authCode, password)
+helpers.connectToBroker()
 
 // if receiver, connect to sender and receive data:
 if (anchor) {
@@ -22152,7 +22187,7 @@ function shr64_lo(ah, al, num) {
 exports.shr64_lo = shr64_lo;
 
 },{"inherits":"/usr/lib/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
+module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -22257,7 +22292,7 @@ module.exports = function evp(crypto, password, salt, keyLen) {
 };
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
+module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
 "2.16.840.1.101.3.4.1.4": "aes-128-cfb",
@@ -24648,7 +24683,7 @@ arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/no
 },{"../hash":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js"][0].apply(exports,arguments)
 },{"inherits":"/usr/lib/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
+module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -26324,7 +26359,7 @@ function findPrime(bits, gen) {
 
 }
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","miller-rabin":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js","randombytes":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/randombytes/browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/lib/primes.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
+module.exports={
     "modp1": {
         "gen": "02",
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a63a3620ffffffffffffffff"
@@ -26359,7 +26394,7 @@ module.exports=module.exports=module.exports=module.exports=module.exports=modul
     }
 }
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js":[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
@@ -26477,7 +26512,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 };
 
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","brorand":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/node_modules/brorand/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/node_modules/brorand/index.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/pbkdf2-compat/browser.js":[function(require,module,exports){
 (function (Buffer){
 var createHmac = require('create-hmac')
@@ -26585,13 +26620,13 @@ function i2ops(c) {
 }
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/browserify-rsa/index.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/browserify-rsa/index.js"][0].apply(exports,arguments)
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js","buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/EVP_BytesToKey.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/EVP_BytesToKey.js"][0].apply(exports,arguments)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/asn1.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/asn1.js"][0].apply(exports,arguments)
 },{"asn1.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1.js","asn1.js-rfc3280":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js-rfc3280/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/fixProc.js":[function(require,module,exports){
