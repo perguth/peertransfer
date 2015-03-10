@@ -375,3 +375,6 @@ a.github::before{
 	height:10px;
 	margin-left:2px;
 }
+#total-downloads {
+	font-weight: bold;
+}
