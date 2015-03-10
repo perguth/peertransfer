@@ -229,6 +229,12 @@ Button styles
 	transition: background-color 0.2s,
 		width 0.3s ease-out;
 }
+.button.requesting-peer {
+	width: 436px;
+	background-repeat: no-repeat;
+	background-position: -436px 0;
+	background-image: url(green-big.png);
+}
 /*-------------------------
 The steps
 --------------------------*/

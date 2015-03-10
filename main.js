@@ -16,6 +16,7 @@ password = ''
 authCode = ''
 helpers.parseAnchor()
 stopTransfer = function () { return false }
+totalDownloads = 0
 
 transfer = {}
 var file_name

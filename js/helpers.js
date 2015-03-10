@@ -75,10 +75,11 @@ helpers.sendFileInChunks = function (conn, file, password) {
   var chunk
   var index = 0
   var done = false
+  var total = Math.ceil(file_size/chunk_size)
   transfer.outgoing(conn, {
     index: index++,
     file_name: file.name,
-    total: Math.ceil(file_size/chunk_size)
+    total: total
   }, password)
   var sendChunkObject = function(index, data) {
     chunk = {
@@ -86,7 +87,14 @@ helpers.sendFileInChunks = function (conn, file, password) {
       data: data
     }
     transfer.outgoing(conn, chunk, password)
-    // update peer progress bar class 'conn.peer'
+    $('.peer-'+ conn.peer).css('background-position',
+      '-'+ Math.ceil(436 - index/total * 436) +'px 0')
+    if (done) {
+      if (totalDownloads++ === 0)
+        $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
+      $('#total-downloads span').html(totalDownloads)
+      $('.peer-'+ conn.peer).css('display', 'none')
+    }
     loopOverChunks()
   }
   var loopOverChunks = function () {

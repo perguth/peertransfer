@@ -26,6 +26,9 @@ var events = function(){
   back.click(function() { // The back button
     stopTransfer = function () { return true }
     helpers.connectToBroker('reconnect')
+    totalDownloads = 0
+    $('#total-downloads').remove()
+    $('*[class*="peer"]').remove()
     $('#send-input').replaceWith(function() {
       return $(this).clone() // Reinitialize the hidden file input
     })
