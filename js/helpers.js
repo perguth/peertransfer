@@ -66,6 +66,7 @@ helpers.sendOnIncoming = function (conn, file, password) {
 }
 helpers.sendFileInChunks = function (conn, file, password) {
   log('helpers.sendFileInChunks()')
+  log(conn)
   var file_size = file.size
   log('File size: '+ file_size)
   var chunk_size = 16300 // Taken from PeeJS
@@ -85,6 +86,7 @@ helpers.sendFileInChunks = function (conn, file, password) {
       data: data
     }
     transfer.outgoing(conn, chunk, password)
+    // update peer progress bar class 'conn.peer'
     loopOverChunks()
   }
   var loopOverChunks = function () {

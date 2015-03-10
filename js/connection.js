@@ -29,8 +29,10 @@ Connection.prototype.acceptConnections = function(callback) {
       log('Incoming: '+ conn.peer)
       conn.on('data', function (receivedAuthCode) {
         log("Auth Code received: "+ receivedAuthCode)
-        if (receivedAuthCode === authCode) callback(conn)
-        else log('authCode rejected')
+        if (receivedAuthCode === authCode) {
+          // place peer progress bar class 'conn.peer'
+          callback(conn)
+        } else log('authCode rejected')
       })
     })
   })
