@@ -15,7 +15,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 # Limitations
 - Encrypted data will not be cached in case of multiple transfers.
-- Does not seem to work on mobile phone.s
+- Does not seem to work on mobile phones.
 
 # Tech in focus
 - WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs)
