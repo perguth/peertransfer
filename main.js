@@ -59,16 +59,6 @@ transfer.incoming = function(enc) {
         }, 300)
         complete_file = []
       }
-  /*
-      file += file.split(',')[1]
-
-      url = helpers.binaryToBlob(decrypted)
-      $('#step3 a').attr('href', url)
-      helpers.step(3)
-      setTimeout(function() {
-        location.href = url // <-- Download!
-      }, 300)
-  */
     } else {
       log(decrypted.chunk)
       alert('Invalid pass phrase or file!')
@@ -81,15 +71,6 @@ transfer.outgoing = function(ptr, file, password) {
   //log(file)
 
   ptr.send(sjcl.encrypt(password, JSON.stringify(file)))
-  /*
-  var reader = new FileReader()
-  reader.onload = function(e) {
-    log(e.target.result)
-    var enc = sjcl.encrypt(password, e.target.result)
-    ptr.send(enc)
-  }
-  reader.readAsDataURL(file.data)
-  */
 }
 
 // hook UI events:
