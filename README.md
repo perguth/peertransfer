@@ -11,7 +11,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 1. Drop files into your browser.
 - Open the generated link on the second PC.
-- Download the files over a *direct (as in peer-to-peer)* and *end-to-end* encrypted line.
+- Download the files over a **direct (as in peer-to-peer)** and **end-to-end encrypted** line.
 
 # Limitations
 - Encrypted data will not be cached in case of multiple transfers.
