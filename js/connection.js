@@ -25,12 +25,11 @@ Connection.prototype.acceptConnections = function(callback) {
   log('Connection.prototype.acceptConnections(...)')
   var that = this
   this.peer.on('connection', function(conn) {
-    that.conn = conn
-    that.conn.on('open', function() {
-      log('Incoming: '+ that.conn.peer)
-      that.conn.on('data', function (receivedAuthCode) {
+    conn.on('open', function() {
+      log('Incoming: '+ conn.peer)
+      conn.on('data', function (receivedAuthCode) {
         log("Auth Code received: "+ receivedAuthCode)
-        if (receivedAuthCode === authCode) callback()
+        if (receivedAuthCode === authCode) callback(conn)
         else log('authCode rejected')
       })
     })

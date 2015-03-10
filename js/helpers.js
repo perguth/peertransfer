@@ -60,7 +60,7 @@ helpers.checkValidity = function (file) {
   } else return true
 }
 helpers.sendOnIncoming = function (conn, file, password) {
-  conn.acceptConnections(function() {
+  conn.acceptConnections(function(conn) {
     helpers.sendFileInChunks(conn, file, password)
   })
 }
