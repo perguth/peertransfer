@@ -61,11 +61,10 @@ helpers.checkValidity = function (file) {
 }
 helpers.sendOnIncoming = function (conn, file, password) {
   conn.acceptConnections(function(conn, totalPeers) {
-    var totalPeers = totalPeers
     helpers.sendFileInChunks(conn, file, password, totalPeers)
   })
 }
-helpers.sendFileInChunks = function (conn, file, password) {
+helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
   log('helpers.sendFileInChunks()')
   log(conn)
   var file_size = file.size
