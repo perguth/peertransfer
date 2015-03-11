@@ -183,11 +183,10 @@ helpers.checkValidity = function (file) {
 }
 helpers.sendOnIncoming = function (conn, file, password) {
   conn.acceptConnections(function(conn, totalPeers) {
-    var totalPeers = totalPeers
     helpers.sendFileInChunks(conn, file, password, totalPeers)
   })
 }
-helpers.sendFileInChunks = function (conn, file, password) {
+helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
   log('helpers.sendFileInChunks()')
   log(conn)
   var file_size = file.size
@@ -22212,7 +22211,7 @@ function shr64_lo(ah, al, num) {
 exports.shr64_lo = shr64_lo;
 
 },{"inherits":"/usr/lib/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports={
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -22317,7 +22316,7 @@ module.exports = function evp(crypto, password, salt, keyLen) {
 };
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
 "2.16.840.1.101.3.4.1.4": "aes-128-cfb",
@@ -24708,7 +24707,7 @@ arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/no
 },{"../hash":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js"][0].apply(exports,arguments)
 },{"inherits":"/usr/lib/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports={
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -26384,7 +26383,7 @@ function findPrime(bits, gen) {
 
 }
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","miller-rabin":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js","randombytes":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/randombytes/browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/lib/primes.json":[function(require,module,exports){
-module.exports={
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
     "modp1": {
         "gen": "02",
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a63a3620ffffffffffffffff"
@@ -26419,7 +26418,7 @@ module.exports={
     }
 }
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js":[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
@@ -26537,7 +26536,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
 };
 
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","brorand":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/node_modules/brorand/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/node_modules/brorand/index.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/brorand/index.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/pbkdf2-compat/browser.js":[function(require,module,exports){
 (function (Buffer){
 var createHmac = require('create-hmac')
@@ -26645,13 +26644,13 @@ function i2ops(c) {
 }
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
+arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/browserify-rsa/index.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/browserify-rsa/index.js"][0].apply(exports,arguments)
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js","buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/EVP_BytesToKey.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/EVP_BytesToKey.js"][0].apply(exports,arguments)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/asn1.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/asn1.js"][0].apply(exports,arguments)
 },{"asn1.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1.js","asn1.js-rfc3280":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js-rfc3280/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/fixProc.js":[function(require,module,exports){
