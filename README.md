@@ -18,7 +18,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - Does not seem to work on mobile phones.
 
 # Tech in focus
-- WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs)
+- WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs).
 - [Stanford Javascript Crypto Library](https://github.com/bitwiseshiftleft/sjcl)
 
 # Influences & sources
