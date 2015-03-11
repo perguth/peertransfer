@@ -30,12 +30,13 @@ Connection.prototype.acceptConnections = function(callback) {
       conn.on('data', function (receivedAuthCode) {
         log('Auth Code received: '+ receivedAuthCode)
         if (receivedAuthCode === authCode) {
+          totalPeers++
           $('.request-activity').after(
             '<div class=\'button red receive requesting-peer peer-'
             + conn.peer
             + '\'>Downloading peer</div>'
           )
-          callback(conn)
+          callback(conn, totalPeers)
         } else log('authCode rejected')
       })
     })

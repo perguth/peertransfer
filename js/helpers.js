@@ -60,8 +60,9 @@ helpers.checkValidity = function (file) {
   } else return true
 }
 helpers.sendOnIncoming = function (conn, file, password) {
-  conn.acceptConnections(function(conn) {
-    helpers.sendFileInChunks(conn, file, password)
+  conn.acceptConnections(function(conn, totalPeers) {
+    var totalPeers = totalPeers
+    helpers.sendFileInChunks(conn, file, password, totalPeers)
   })
 }
 helpers.sendFileInChunks = function (conn, file, password) {
@@ -89,34 +90,55 @@ helpers.sendFileInChunks = function (conn, file, password) {
     transfer.outgoing(conn, chunk, password)
     $('.peer-'+ conn.peer).css('background-position',
       '-'+ Math.ceil(436 - index/total * 436) +'px 0')
-    if (done) {
-      if (totalDownloads++ === 0)
-        $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
-      $('#total-downloads span').html(totalDownloads)
-      $('.peer-'+ conn.peer).css('display', 'none')
-    }
     loopOverChunks()
   }
   var loopOverChunks = function () {
     if ( ! done && stopTransfer() === false) {
       log('Chunking while()')
-      if (range_end > file_size) {
-        done = true
-        range_end = file_size
-      }
-      (helpers.blobToDataURL)( // TODO: need IIFE right?!
-        index++,
-        file.slice(range_start, range_end),
-        sendChunkObject)
+      if (encrypted_chunks[index] === undefined && totalPeers == 1) {
+        if (range_end > file_size) {
+          done = true
+          range_end = file_size
+        }
+        (helpers.blobToDataURL)( // TODO: need IIFE right?!
+          index++,
+          file.slice(range_start, range_end),
+          sendChunkObject)
 
-      range_start += chunk_size
-      range_end += chunk_size
-      if (range_end === file_size) done = true
+        range_start += chunk_size
+        range_end += chunk_size
+        if (range_end === file_size) done = true
+      } else if (encrypted_chunks[index] === undefined && index <= total) {
+        // just wait
+        loopOverChunks()
+      } else {
+        if (index > total) {
+          done = true
+          loopOverChunks() // to reach done animation
+        } else {
+          log('Using cached blob: ' + index)
+          if (encrypted_chunks[index] !== undefined) {
+            (helpers.blobToDataURL)( // TODO: need IIFE right?!
+              index,
+              encrypted_chunks[index],
+              sendChunkObject)
+            index++
+          }
+        }
+      }
+    } else {
+      if (done) {
+        if (totalDownloads++ === 0)
+          $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
+        $('#total-downloads span').html(totalDownloads)
+        $('.peer-'+ conn.peer).css('display', 'none')
+      }
     }
   }
   loopOverChunks()
 }
 helpers.blobToDataURL = function (index, blob, callback) {
+  encrypted_chunks[index] = blob
   var reader = new FileReader()
   reader.onload = function(e) {
     log(e.target.result)

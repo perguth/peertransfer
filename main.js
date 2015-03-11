@@ -17,6 +17,8 @@ authCode = ''
 helpers.parseAnchor()
 stopTransfer = function () { return false }
 totalDownloads = 0
+totalPeers = 0
+encrypted_chunks = []
 
 transfer = {}
 var file_name
