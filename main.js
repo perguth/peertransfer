@@ -9,6 +9,7 @@ DEBUG = true
 HOST = '0.peerjs.com'
 PORT = 9000
 SSL = false
+chunk_size = 16300 // Taken from PeerJS
 anchor = ''
 peerID = ''
 dataEnc = ''

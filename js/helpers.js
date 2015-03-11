@@ -70,7 +70,6 @@ helpers.sendFileInChunks = function (conn, file, password) {
   log(conn)
   var file_size = file.size
   log('File size: '+ file_size)
-  var chunk_size = 16300 // Taken from PeeJS
   var range_start = 0
   var range_end = chunk_size
   var chunk
