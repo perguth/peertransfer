@@ -129,7 +129,11 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         if (totalDownloads++ === 0)
           $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
         $('#total-downloads span').html(totalDownloads)
-        $('.peer-'+ conn.peer).css('display', 'none')
+        $('.peer-'+ conn.peer).remove()
+      }
+      if (stopTransfer() === true) {
+        conn.close()
+        ptr.disconnect()
       }
     }
   }
@@ -145,6 +149,7 @@ helpers.blobToDataURL = function (index, blob, callback) {
   reader.readAsDataURL(blob)
 }
 helpers.connectToBroker = function (reconnect) {
+  helpers.parseAnchor()
   conn = new Connection(function() {
     if ( ! anchor && ! reconnect) {
       helpers.visualReadyStatus()
@@ -154,6 +159,7 @@ helpers.connectToBroker = function (reconnect) {
     if (reconnect) stopTransfer = function () { return false }
   })
   conn.putOwnID('.url', authCode, password)
+  return conn
 }
 
 module.exports = helpers

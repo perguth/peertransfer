@@ -9,7 +9,7 @@ var Connection = function(callback) {
     port: PORT,
     key: API_KEY,
     secure: SSL? true:false,
-    debug: DEBUG? 2:0,
+    debug: DEBUG? 3:0,
   })
   this.peer.on('open', callback)
   this.peer.on('error', function () {

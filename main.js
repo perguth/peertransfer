@@ -15,7 +15,6 @@ peerID = ''
 dataEnc = ''
 password = ''
 authCode = ''
-helpers.parseAnchor()
 stopTransfer = function () { return false }
 totalDownloads = 0
 totalPeers = 0
@@ -81,12 +80,12 @@ transfer.outgoing = function(ptr, file, password) {
 $(require('./js/events'))
 
 // connect to broker server:
-helpers.connectToBroker()
+ptr = helpers.connectToBroker()
 
 // if receiver, connect to sender and receive data:
 if (anchor) {
-  conn.connect(peerID)
-  conn.acceptData(function(enc) {
+  ptr.connect(peerID)
+  ptr.acceptData(function(enc) {
     transfer.incoming(enc)
   })
 
