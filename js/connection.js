@@ -23,7 +23,6 @@ Connection.prototype.connect = function(id) {
 }
 Connection.prototype.acceptConnections = function(callback) {
   log('Connection.prototype.acceptConnections(...)')
-  var that = this
   this.peer.on('connection', function(conn) {
     conn.on('open', function() {
       log('Incoming: '+ conn.peer)
