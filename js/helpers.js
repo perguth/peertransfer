@@ -1,15 +1,16 @@
 var helpers = {}
 
 helpers.visualReadyStatus = function () {
-  $('#step1 .button').css('cursor', 'pointer')
-  $('#step1 .button').click(function () {
+  var button = $('#step1 .button')
+  button.css('cursor', 'pointer')
+  button.click(function () {
     $('#send-input').click()
   })
-  $('#step1 .button').attr('class', 'button green send')
+  button.attr('class', 'button green send')
   setTimeout(function() {
-    $('#step1 .button').html('send a file')
-    $('#step1 .button').toggleClass('send')
-    $('#step1 .button').toggleClass('browse')
+    button.html('send a file')
+    button.toggleClass('send')
+    button.toggleClass('browse')
   }, 100)
 }
 helpers.generateRandomString = function () {

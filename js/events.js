@@ -10,8 +10,9 @@ var events = function(){
 
   var url = location.href
   if ( ! SSL && url.split('://')[0] === 'https') {
-    $('footer').css('opacity', '1')
-    $('footer').html("You need to use HTTP. This is just as secure since we use end-to-end encryption. <a href='' id=reloadUsingHTTP>Use HTTP</a>")
+    var footer = $('footer')
+    footer.css('opacity', '1')
+    footer.html("You need to use HTTP. This is just as secure since we use end-to-end encryption. <a href='' id=reloadUsingHTTP>Use HTTP</a>")
     $('#reloadUsingHTTP').prop('href',
       'http://' + url.split('://')[1]
     )

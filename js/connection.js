@@ -13,8 +13,10 @@ var Connection = function(callback) {
   })
   this.peer.on('open', callback)
   this.peer.on('error', function () {
-    $('footer').css('opacity', '1')
-    $('footer').html('Could not connect. <a href=javascript:location.reload()>Retry?</a>')
+    var footer = $('footer')
+    footer.css('opacity', '1')
+    footer.html('Could not connect. '
+      + '<a href=javascript:location.reload()>Retry?</a>')
   })
 }
 Connection.prototype.connect = function(id) {
