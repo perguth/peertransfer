@@ -10,12 +10,14 @@ var Connection = function(callback) {
     port: PORT,
     key: API_KEY,
     secure: SSL? true:false,
-    debug: DEBUG? 2:0,
+    debug: DEBUG? 3:0,
   })
   this.peer.on('open', callback)
   this.peer.on('error', function () {
-    $('footer').css('opacity', '1')
-    $('footer').html('Could not connect. <a href=javascript:location.reload()>Retry?</a>')
+    var footer = $('footer')
+    footer.css('opacity', '1')
+    footer.html('Could not connect. '
+      + '<a href=javascript:location.reload()>Retry?</a>')
   })
 }
 Connection.prototype.connect = function(id) {
@@ -24,7 +26,6 @@ Connection.prototype.connect = function(id) {
 }
 Connection.prototype.acceptConnections = function(callback) {
   log('Connection.prototype.acceptConnections(...)')
-  var that = this
   this.peer.on('connection', function(conn) {
     conn.on('open', function() {
       log('Incoming: '+ conn.peer)
@@ -58,7 +59,12 @@ Connection.prototype.send = function(data) {
 Connection.prototype.putOwnID = function(selector) {
   log('Connection.prototype.putOwnID('+ selector +')')
   this.peer.on('open', function(id) {
-    $(selector).val(document.URL +'#'+ id +':'+ authCode +':'+ password)
+    var url = window.location.href.toString()
+    var idx = url.indexOf("#")
+    var anchor = (idx !== -1) ? true : false
+    $(selector).val(url
+      + (anchor ? "" : '#')
+      + id +':'+ authCode +':'+ password)
   })
 }
 Connection.prototype.disconnect = function() {
@@ -87,8 +93,9 @@ var events = function(){
 
   var url = location.href
   if ( ! SSL && url.split('://')[0] === 'https') {
-    $('footer').css('opacity', '1')
-    $('footer').html("You need to use HTTP. This is just as secure since we use end-to-end encryption. <a href='' id=reloadUsingHTTP>Use HTTP</a>")
+    var footer = $('footer')
+    footer.css('opacity', '1')
+    footer.html("You need to use HTTP. This is just as secure since we use end-to-end encryption. <a href='' id=reloadUsingHTTP>Use HTTP</a>")
     $('#reloadUsingHTTP').prop('href',
       'http://' + url.split('://')[1]
     )
@@ -123,15 +130,16 @@ module.exports = events
 var helpers = {}
 
 helpers.visualReadyStatus = function () {
-  $('#step1 .button').css('cursor', 'pointer')
-  $('#step1 .button').click(function () {
+  var button = $('#step1 .button')
+  button.css('cursor', 'pointer')
+  button.click(function () {
     $('#send-input').click()
   })
-  $('#step1 .button').attr('class', 'button green send')
+  button.attr('class', 'button green send')
   setTimeout(function() {
-    $('#step1 .button').html('send a file')
-    $('#step1 .button').toggleClass('send')
-    $('#step1 .button').toggleClass('browse')
+    button.html('send a file')
+    button.toggleClass('send')
+    button.toggleClass('browse')
   }, 100)
 }
 helpers.generateRandomString = function () {
@@ -251,7 +259,11 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         if (totalDownloads++ === 0)
           $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
         $('#total-downloads span').html(totalDownloads)
-        $('.peer-'+ conn.peer).css('display', 'none')
+        $('.peer-'+ conn.peer).remove()
+      }
+      if (stopTransfer() === true) {
+        conn.close()
+        ptr.disconnect()
       }
     }
   }
@@ -267,6 +279,7 @@ helpers.blobToDataURL = function (index, blob, callback) {
   reader.readAsDataURL(blob)
 }
 helpers.connectToBroker = function (reconnect) {
+  helpers.parseAnchor()
   conn = new Connection(function() {
     if ( ! anchor && ! reconnect) {
       helpers.visualReadyStatus()
@@ -276,6 +289,7 @@ helpers.connectToBroker = function (reconnect) {
     if (reconnect) stopTransfer = function () { return false }
   })
   conn.putOwnID('.url', authCode, password)
+  return conn
 }
 
 module.exports = helpers
@@ -298,7 +312,6 @@ peerID = ''
 dataEnc = ''
 password = ''
 authCode = ''
-helpers.parseAnchor()
 stopTransfer = function () { return false }
 totalDownloads = 0
 totalPeers = 0
@@ -364,12 +377,12 @@ transfer.outgoing = function(ptr, file, password) {
 $(require('./js/events'))
 
 // connect to broker server:
-helpers.connectToBroker()
+ptr = helpers.connectToBroker()
 
 // if receiver, connect to sender and receive data:
 if (anchor) {
-  conn.connect(peerID)
-  conn.acceptData(function(enc) {
+  ptr.connect(peerID)
+  ptr.acceptData(function(enc) {
     transfer.incoming(enc)
   })
 
@@ -22211,7 +22224,7 @@ function shr64_lo(ah, al, num) {
 exports.shr64_lo = shr64_lo;
 
 },{"inherits":"/usr/lib/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -22316,7 +22329,7 @@ module.exports = function evp(crypto, password, salt, keyLen) {
 };
 }).call(this,require("buffer").Buffer)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
 "2.16.840.1.101.3.4.1.4": "aes-128-cfb",
@@ -24707,7 +24720,7 @@ arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/no
 },{"../hash":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/elliptic/node_modules/hash.js/lib/hash/utils.js"][0].apply(exports,arguments)
 },{"inherits":"/usr/lib/node_modules/browserify/node_modules/inherits/inherits_browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/create-ecdh/node_modules/elliptic/package.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
   "name": "elliptic",
   "version": "1.0.1",
   "description": "EC cryptography",
@@ -26383,7 +26396,7 @@ function findPrime(bits, gen) {
 
 }
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js","miller-rabin":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/node_modules/miller-rabin/lib/mr.js","randombytes":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/randombytes/browser.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/diffie-hellman/lib/primes.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports={
     "modp1": {
         "gen": "02",
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a63a3620ffffffffffffffff"
@@ -26650,7 +26663,7 @@ arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/no
 },{"bn.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js","buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/EVP_BytesToKey.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/EVP_BytesToKey.js"][0].apply(exports,arguments)
 },{"buffer":"/usr/lib/node_modules/browserify/node_modules/buffer/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/aesid.json":[function(require,module,exports){
-module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
+module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=module.exports=arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/aesid.json"][0].apply(exports,arguments)
 },{}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/asn1.js":[function(require,module,exports){
 arguments[4]["/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/browserify-sign/node_modules/parse-asn1/asn1.js"][0].apply(exports,arguments)
 },{"asn1.js":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js/lib/asn1.js","asn1.js-rfc3280":"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/node_modules/asn1.js-rfc3280/index.js"}],"/usr/lib/node_modules/browserify/node_modules/crypto-browserify/node_modules/public-encrypt/node_modules/parse-asn1/fixProc.js":[function(require,module,exports){
