@@ -58,7 +58,12 @@ Connection.prototype.send = function(data) {
 Connection.prototype.putOwnID = function(selector) {
   log('Connection.prototype.putOwnID('+ selector +')')
   this.peer.on('open', function(id) {
-    $(selector).val(document.URL +'#'+ id +':'+ authCode +':'+ password)
+    var url = window.location.href.toString()
+    var idx = url.indexOf("#")
+    var anchor = (idx !== -1) ? true : false
+    $(selector).val(url
+      + (anchor ? "" : '#')
+      + id +':'+ authCode +':'+ password)
   })
 }
 Connection.prototype.disconnect = function() {
