@@ -134,7 +134,7 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         peerBar.fadeTo(0, 0)
         setTimeout(function () {
           $('.peer-'+ conn.peer).remove()
-        }, 25)
+        }, 250)
       }
       if (stopTransfer() === true) {
         conn.close()

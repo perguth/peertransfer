@@ -35,7 +35,7 @@ Connection.prototype.acceptConnections = function(callback) {
           $('.request-activity').after(
             '<div class=\'button red receive requesting-peer peer-'
             + conn.peer
-            + '\'>Downloading peer</div>'
+            + '\' style=\'opacity: 0;\'>Downloading peer</div>'
           )
           $('.peer-'+ conn.peer).fadeTo(0, 1)
           callback(conn, totalPeers)
