@@ -28,6 +28,8 @@ var events = function(){
     stopTransfer = function () { return true }
     helpers.connectToBroker('reconnect')
     totalDownloads = 0
+    totalPeers = 0
+    encrypted_chunks = []
     $('#total-downloads').remove()
     $('*[class*="peer"]').remove()
     $('#send-input').replaceWith(function() {
