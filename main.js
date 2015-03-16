@@ -34,9 +34,10 @@ transfer.incoming = function(enc) {
     file_name = decrypted.file_name
     total = decrypted.total
     log('Total Chunks: '+ total)
-    $('#step2 .button').css('background-repeat', 'no-repeat')
-    $('#step2 .button').css('background-position', '-240px 0')
-    $('#step2 .button').css('background-image', 'url(green.png)')
+    var downloadBar = $('#step2 .button')
+    downloadBar.css('background-repeat', 'no-repeat')
+    downloadBar.css('background-position', '-240px 0')
+    downloadBar.css('background-image', 'url(green.png)')
   } else {
     log('Receving chunk #'+ decrypted.index +' of '+ total)
     //log(decrypted)

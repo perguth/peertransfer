@@ -236,6 +236,7 @@ Button styles
 	background-image: url(green-big.png);
 	opacity: 0;
 	transition: opacity .25s ease-in-out;
+	cursor: default;
 }
 /*-------------------------
 The steps
@@ -269,6 +270,11 @@ body.receive #step2{
 	box-shadow:3px 3px 0 rgba(0,0,0,0.05);
 	font-size:36px;
 	color:#555;
+}
+
+#step2 .button {
+	cursor: default;
+	opacity:1;
 }
 
 #step3{
