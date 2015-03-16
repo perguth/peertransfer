@@ -130,7 +130,11 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         if (totalDownloads++ === 0)
           $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
         $('#total-downloads span').html(totalDownloads)
-        $('.peer-'+ conn.peer).remove()
+        var peerBar = $('.peer-'+ conn.peer)
+        peerBar.fadeTo(0, 0)
+        setTimeout(function () {
+          $('.peer-'+ conn.peer).remove()
+        }, 25)
       }
       if (stopTransfer() === true) {
         conn.close()

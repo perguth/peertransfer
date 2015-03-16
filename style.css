@@ -234,6 +234,8 @@ Button styles
 	background-repeat: no-repeat;
 	background-position: -436px 0;
 	background-image: url(green-big.png);
+	opacity: 0;
+	transition: opacity .25s ease-in-out;
 }
 /*-------------------------
 The steps

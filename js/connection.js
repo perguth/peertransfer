@@ -37,6 +37,7 @@ Connection.prototype.acceptConnections = function(callback) {
             + conn.peer
             + '\'>Downloading peer</div>'
           )
+          $('.peer-'+ conn.peer).fadeTo(0, 1)
           callback(conn, totalPeers)
         } else log('authCode rejected')
       })
