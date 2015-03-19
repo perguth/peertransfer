@@ -75,7 +75,10 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
   var chunk
   var index = 0
   var done = false
+  var aborted = false
   var total = Math.ceil(file_size/chunk_size)
+  var ackWindow = 10
+  var ackCounter = ackWindow
   transfer.outgoing(conn, {
     index: index++,
     file_name: file.name,
@@ -92,7 +95,10 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
     loopOverChunks()
   }
   var loopOverChunks = function () {
-    if ( ! done && stopTransfer() === false) {
+    conn.on('data', function (data) {
+      if (data === 'ACK') ackCounter = ackWindow
+    })
+    if ( (!done && !aborted) && stopTransfer() === false) {
       log('Chunking while()')
       if (encrypted_chunks[index] === undefined && totalPeers == 1) {
         if (range_end > file_size) {
@@ -107,6 +113,7 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         range_start += chunk_size
         range_end += chunk_size
         if (range_end === file_size) done = true
+        if (--ackCounter <= 0) aborted = true
       } else if (encrypted_chunks[index] === undefined && index <= total) {
         // just wait
         loopOverChunks()
@@ -130,6 +137,13 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         if (totalDownloads++ === 0)
           $('.content.if-send').append('<div id=total-downloads>Total downloads: <span>0</span></div>')
         $('#total-downloads span').html(totalDownloads)
+        var peerBar = $('.peer-'+ conn.peer)
+        peerBar.fadeTo(0, 0)
+        setTimeout(function () {
+          $('.peer-'+ conn.peer).remove()
+        }, 250)
+      }
+      if (aborted) {
         var peerBar = $('.peer-'+ conn.peer)
         peerBar.fadeTo(0, 0)
         setTimeout(function () {
