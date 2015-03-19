@@ -47,9 +47,13 @@ Connection.prototype.acceptConnections = function(callback) {
 Connection.prototype.acceptData = function(callback) {
   log('Connection.prototype.acceptData()')
   var that = this
+  var sendACKs = function (data) {
+    that.conn.send('ACK')
+    callback(data)
+  }
   this.conn.on('open', function() {
     that.conn.send(authCode)
-    that.conn.on('data', callback)
+    that.conn.on('data', sendACKs)
   })
 }
 Connection.prototype.send = function(data) {
