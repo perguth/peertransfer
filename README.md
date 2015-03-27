@@ -13,6 +13,18 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - Open the generated link on other PCs.
 - Download over a **direct (as in peer-to-peer)** and **end-to-end encrypted** line.
 
+*Thus the file will only be available for download as long as the sender keeps his browser tab open.*
+
+# Features
+- [x] Uses WebRTC for peer-to-peer data connection
+- [x] End-to-end encryption
+- [x] Authenticate incoming connections
+- [x] Display progress for both sender and receiver
+- [x] Allow multiple transfers at once
+- [x] Cache encrypted data for successive transfers in one session
+- [x] Count total transfers
+- [x] Stop sending if the receiver becomes unavailable
+
 # Tech in focus
 - WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs).
 - [Stanford Javascript Crypto Library](https://github.com/bitwiseshiftleft/sjcl)
