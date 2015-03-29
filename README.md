@@ -22,7 +22,6 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - [x] Display progress for both sender and receiver
 - [x] Allow multiple transfers at once
 - [x] Cache encrypted data for successive transfers in one session
-- [x] Count total transfers
 - [x] Stop sending if the receiver becomes unavailable
 
 # Tech in focus
