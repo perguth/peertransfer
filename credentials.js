@@ -1,3 +1,10 @@
-// Generously provided by http://peerjs.com
-// 50 Concurrent peers, without SSL
-API_KEY = 'ggcgyap36w7y14i'
+/**
+  You can get a free broker server from http://peerjs.com
+  They allow for 50 concurrent peers without SSL.
+
+  The following server is provided by me on the best-effort principle:
+  */
+HOST = 'peerjs.guth.so'
+API_KEY = 'yjGU7Mu97SgU5guNpAJHLgd2'
+PORT = 62784
+SSL = true
