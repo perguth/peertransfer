@@ -111,11 +111,11 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
           done = true
           range_end = file_size
         }
-        (helpers.blobToDataURL)( // TODO: need IIFE right?!
+        log('Sending chunk: #'+ index)
+        ;(helpers.blobToDataURL)( // TODO: need IIFE right?!
           index++,
           file.slice(range_start, range_end),
           sendChunkObject)
-
         range_start += chunk_size
         range_end += chunk_size
         if (range_end === file_size) done = true
@@ -147,11 +147,12 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         } else {
           log('Aborted, close()')
         }
-        conn.close()
+        //conn.close()
         var peerBar = $('.peer-'+ conn.peer)
         peerBar.fadeTo(0, 0)
         setTimeout(function () {
           $('.peer-'+ conn.peer).remove()
+          conn.close()
         }, 250)
       }
       if (stopTransfer() === true) {
