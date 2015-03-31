@@ -80,8 +80,10 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
   var ackWindow = 20
   var ackCounter = ackWindow
   conn.on('data', function (data) {
-    log('ACK received')
-    if (data === 'ACK') ackCounter = ackWindow
+    if (data === 'ACK') {
+      log('ACK received')
+      ackCounter = ackWindow
+    }
   })
   transfer.outgoing(conn, {
     index: index++,
