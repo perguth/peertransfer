@@ -101,6 +101,7 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
     loopOverChunks()
   }
   var loopOverChunks = function () {
+    if (index > total) done = true
     if ( (!done && !aborted) && stopTransfer() === false) {
       log('Chunking while()')
       if (--ackCounter <= 0) {
@@ -108,7 +109,7 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         done = aborted = true
       }
       log('ACK counter: '+ ackCounter)
-      if (encrypted_chunks[index] === undefined && totalPeers == 1) {
+      if (encrypted_chunks[index] === undefined) {
         if (range_end > file_size) {
           done = true
           range_end = file_size
@@ -121,9 +122,6 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
         range_start += chunk_size
         range_end += chunk_size
         if (range_end === file_size) done = true
-      } else if (encrypted_chunks[index] === undefined && index <= total) {
-        // just wait
-        loopOverChunks()
       } else {
         if (index > total) {
           done = true
