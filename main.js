@@ -24,6 +24,12 @@ var total
 var complete_file = []
 var counter = 1
 
+if (
+  SSL
+  && window.location.protocol != "https:"
+  && window.location.protocol != "file:"
+) window.location.href = "https:" + window.location.href.substring(window.location.protocol.length)
+
 transfer.incoming = function(enc) {
   decrypted = JSON.parse(sjcl.decrypt(password, enc))
 
