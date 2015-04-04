@@ -1,0 +1,1 @@
+console.error("Error: Parsing file /home/pguth/Work/peertransfer/js/connection.js: Unexpected token (59:0)")
