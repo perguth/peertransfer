@@ -56,11 +56,6 @@ Connection.prototype.acceptData = function(callback) {
     that.conn.on('data', sendACKs)
   })
   this.conn.on('close', function () {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d61c41b... fix wrong error on finish (receiver)
     setTimeout(250, function () {
       if (! received) {
         var footer = $('footer')
@@ -69,20 +64,6 @@ Connection.prototype.acceptData = function(callback) {
           + '<a href=javascript:location.reload()>Retry?</a>')
       }
     })
-<<<<<<< HEAD
-=======
-=======
->>>>>>> fe3b859... added "connection lost" error on receivers side
-    var footer = $('footer')
-    footer.css('opacity', '1')
-    footer.html('Connection lost. '
-      + '<a href=javascript:location.reload()>Retry?</a>')
-<<<<<<< HEAD
->>>>>>> fe3b859... added "connection lost" error on receivers side
-=======
->>>>>>> fe3b859... added "connection lost" error on receivers side
-=======
->>>>>>> d61c41b... fix wrong error on finish (receiver)
   })
 }
 Connection.prototype.send = function(data) {
