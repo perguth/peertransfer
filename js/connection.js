@@ -56,6 +56,7 @@ Connection.prototype.acceptData = function(callback) {
     that.conn.on('data', sendACKs)
   })
   this.conn.on('close', function () {
+<<<<<<< HEAD
     setTimeout(250, function () {
       if (! received) {
         var footer = $('footer')
@@ -64,6 +65,12 @@ Connection.prototype.acceptData = function(callback) {
           + '<a href=javascript:location.reload()>Retry?</a>')
       }
     })
+=======
+    var footer = $('footer')
+    footer.css('opacity', '1')
+    footer.html('Connection lost. '
+      + '<a href=javascript:location.reload()>Retry?</a>')
+>>>>>>> fe3b859... added "connection lost" error on receivers side
   })
 }
 Connection.prototype.send = function(data) {
