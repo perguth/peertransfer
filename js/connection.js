@@ -51,9 +51,15 @@ Connection.prototype.acceptData = function(callback) {
     that.conn.send('ACK')
     callback(data)
   }
-  this.conn.on('open', function() {
+  this.conn.on('open', function () {
     that.conn.send(authCode)
     that.conn.on('data', sendACKs)
+  })
+  this.conn.on('close', function () {
+    var footer = $('footer')
+    footer.css('opacity', '1')
+    footer.html('Connection lost. '
+      + '<a href=javascript:location.reload()>Retry?</a>')
   })
 }
 Connection.prototype.send = function(data) {
