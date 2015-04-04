@@ -16,6 +16,7 @@ stopTransfer = function () { return false }
 totalDownloads = 0
 totalPeers = 0
 encrypted_chunks = []
+received = false
 
 transfer = {}
 var file_name
@@ -53,6 +54,7 @@ transfer.incoming = function(enc) {
         $('#step2 .button').css('background-position',
           '-'+ Math.ceil(240 - counter/total * 240) +'px 0')
       } else {
+        received = true
         //complete_file += decrypted.data.split(',')[1]
         complete_file[index-1] = helpers.binaryToBlob(decrypted.data)
         var blob = new Blob(complete_file)

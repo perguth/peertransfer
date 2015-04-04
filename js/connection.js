@@ -56,10 +56,12 @@ Connection.prototype.acceptData = function(callback) {
     that.conn.on('data', sendACKs)
   })
   this.conn.on('close', function () {
-    var footer = $('footer')
-    footer.css('opacity', '1')
-    footer.html('Connection lost. '
-      + '<a href=javascript:location.reload()>Retry?</a>')
+    if (! received) {
+      var footer = $('footer')
+      footer.css('opacity', '1')
+      footer.html('Connection lost. '
+        + '<a href=javascript:location.reload()>Retry?</a>')
+    }
   })
 }
 Connection.prototype.send = function(data) {
