@@ -17,6 +17,7 @@ totalDownloads = 0
 totalPeers = 0
 encrypted_chunks = []
 received = false
+ackWindow = 20
 
 transfer = {}
 var file_name

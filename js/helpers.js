@@ -77,7 +77,6 @@ helpers.sendFileInChunks = function (conn, file, password, totalPeers) {
   var done = false
   var aborted = false
   var total = Math.ceil(file_size/chunk_size)
-  var ackWindow = 20
   var ackCounter = ackWindow
   conn.on('data', function (data) {
     if (data === 'ACK') {
