@@ -15,7 +15,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 *Thus the file will only be available for download as long as the sender keeps his browser tab open.*
 
-# Features
+## Features
 - [x] Uses WebRTC for peer-to-peer data connection
 - [x] End-to-end encryption
 - [x] Authenticate incoming connections
@@ -23,6 +23,20 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 - [x] Allow multiple transfers at once
 - [x] Cache encrypted data for successive transfers in one session
 - [x] Stop sending if the receiver becomes unavailable
+
+# Install
+
+Simply pull the `gh-pages` branch like so. Peertransfer can be used on any (managed) hoster.
+
+```bash
+git clone https://github.com/pguth/peertransfer.git
+cd peertransfer
+git checkout gh-pages
+
+# done and works right out the box if `peertransfer/index.html`
+# etc. can be accessed through the web.
+```
+
 
 # Tech in focus
 - WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs).
