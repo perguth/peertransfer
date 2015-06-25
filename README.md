@@ -52,6 +52,7 @@ git checkout gh-pages
 - [ShareFest](https://github.com/Peer5/ShareFest)
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/)
 - [WebTorrent](https://github.com/feross/webtorrent)
+- [OnionShare](https://onionshare.org/)
 
 ***
 
