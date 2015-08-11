@@ -1,7 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
 [![License](https://img.shields.io/badge/license-AGPL-blue.svg)](https://www.gnu.org/licenses/why-affero-gpl.html)
-[![Code Climate](https://codeclimate.com/github/pguth/peertransfer/badges/gpa.svg)](https://codeclimate.com/github/pguth/peertransfer)
-[![Test Coverage](https://codeclimate.com/github/pguth/peertransfer/badges/coverage.svg)](https://codeclimate.com/github/pguth/peertransfer)
 [![Gratipay](https://img.shields.io/gratipay/pguth.svg)](https://gratipay.com/pguth/)
 [![Flattr](https://raw.githubusercontent.com/balupton/flattr-buttons/master/badge-93x20.png)](https://flattr.com/thing/1583b1a2c05938cc9d945a6b18cea23c)
 
@@ -53,6 +51,7 @@ git checkout gh-pages
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/)
 - [WebTorrent](https://github.com/feross/webtorrent)
 - [OnionShare](https://onionshare.org/)
+- [FilePizza](https://github.com/kern/filepizza)
 
 ***
 
