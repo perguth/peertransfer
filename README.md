@@ -1,9 +1,9 @@
+# Peertransfer
+
 [![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
 [![License](https://img.shields.io/badge/license-AGPL-blue.svg)](https://www.gnu.org/licenses/why-affero-gpl.html)
 [![Gratipay](https://img.shields.io/gratipay/pguth.svg)](https://gratipay.com/pguth/)
 [![Flattr](https://raw.githubusercontent.com/balupton/flattr-buttons/master/badge-93x20.png)](https://flattr.com/thing/1583b1a2c05938cc9d945a6b18cea23c)
-
-# Peertransfer
 
 In-browser secure P2P-filetransfer in *three simple steps:*
 
