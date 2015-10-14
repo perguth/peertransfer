@@ -1,10 +1,5 @@
 # Peertransfer
 
-[![Stories in Ready](https://badge.waffle.io/pguth/peertransfer.png?label=ready&title=Ready)](https://waffle.io/pguth/peertransfer)
-[![License](https://img.shields.io/badge/license-AGPL-blue.svg)](https://www.gnu.org/licenses/why-affero-gpl.html)
-[![Gratipay](https://img.shields.io/gratipay/pguth.svg)](https://gratipay.com/pguth/)
-[![Flattr](https://raw.githubusercontent.com/balupton/flattr-buttons/master/badge-93x20.png)](https://flattr.com/submit/auto?url=https%3A//github.com/pguth/peertransfer)
-
 In-browser secure P2P-filetransfer in *three simple steps:*
 
 1. Select the file you want to send.
