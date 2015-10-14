@@ -46,6 +46,7 @@ git checkout gh-pages
 
 # Related &|| noteable
 - [My presentation slides](https://slides.com/pguth/peertransfer)
+- [peermesh](https://github.com/pguth/peermesh)
 - [sharedrop](https://github.com/cowbell/sharedrop)
 - [ShareFest](https://github.com/Peer5/ShareFest)
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/)
