@@ -6,5 +6,5 @@
   */
 HOST = 'peerjs.perguth.de'
 API_KEY = 'yjGU7Mu97SgU5guNpAJHLgd2'
-PORT = 62710
+PORT = 443
 SSL = true
