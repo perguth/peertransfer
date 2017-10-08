@@ -57,9 +57,12 @@ function initialize () {
       data.signal = aes.encrypt(data.signal, key).toString()
       return data
     },
-    unwrap: data => {
+    unwrap: (data, id) => {
+      console.log('sw.me', sw.me, id, data.from)
       if (!data.signal) return data
-      data.signal = (aes.decrypt(data.signal, key)).toString(enc)
+      try {
+        data.signal = (aes.decrypt(data.signal, key)).toString(enc)
+      } catch (e) { return }
       data.signal = JSON.parse(data.signal)
       return data
     }
