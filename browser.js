@@ -22,7 +22,7 @@ function attachListeners () {
   $(document).on('change', '#send-input', e => {
     // the user selected a file and wants to send it
     window.location.hash = '#'
-    $('.url').val(`${window.location.origin}/#${key}`)
+    $('.url').val(`${window.location.origin + window.location.pathname}#${key}`)
     $('body').attr('class', 'send')
     file = e.target.files[0]
     step(2)
