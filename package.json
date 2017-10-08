@@ -13,8 +13,7 @@
   "scripts": {
     "test": "standard && tape test.js",
     "start": "budo --live --host localhost index.js:bundle.js",
-    "build": "browserify index.js -o bundle.js",
-    "deploy": ""
+    "build": "mkdir -p build && browserify browser.js -o build/bundle.js -t [babelify --presets [es2015]] && cp -r index.html style.css assets build/"
   },
   "dependencies": {
     "clipboard": "^1.7.1",
@@ -26,6 +25,8 @@
     "webrtc-swarm": "https://github.com/mafintosh/webrtc-swarm.git"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
     "budo": "^10.0.4",
     "standard": "^10.0.3",
     "tape": "^4.8.0"
