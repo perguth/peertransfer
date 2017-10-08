@@ -13,11 +13,9 @@ let hash, key, hub, sw
 let peers = []
 
 initialize()
+new Clipboard('.btn') // eslint-disable-line
 
-window.onbeforeunload = x => {
-  console.log('cleanup  ')
-  reset()
-}
+window.onbeforeunload = x => reset()
 
 $('a.back').click(function () {
   $('#total-downloads').remove()
@@ -40,18 +38,14 @@ $(document).on('change', '#send-input', e => {
   step(2)
 })
 
-document.addEventListener('DOMContentLoaded', () => {
-  new Clipboard('.btn') // eslint-disable-line
-})
-
 function initialize () {
   step(1)
   hash = window.location.hash.substr(1)
   if (!hash) bootAnimation()
   key = hash || randomHex('24')
   hub = signalhub(`peertransfer-${key}`.substr(0, 7), [
-    'https://signalhub.perguth.de:65300/',
-    'https://signalhub.mafintosh.com/'
+    // 'https://signalhub.mafintosh.com/', // bug in lib?!
+    'https://signalhub.perguth.de:65300/'
   ])
   sw = swarm(hub, {
     // The goal here is to protect the signaling data that's beeing exchanged
