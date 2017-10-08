@@ -1,42 +1,46 @@
 let $ = require('jquery')
-let signalhub = require('signalhub')
-let swarm = require('webrtc-swarm')
+let aes = require('crypto-js').AES
+let Clipboard = require('clipboard')
+let crypto = require('crypto')
+let enc = require('crypto-js').enc.Utf8
 let FileReadStream = require('namedfilestream/read')
 let FileWriteStream = require('namedfilestream/write')
-let crypto = require('crypto')
-let aes = require('crypto-js').AES
-let enc = require('crypto-js').enc.Utf8
-let Clipboard = require('clipboard')
+let signalhub = require('signalhub')
+let swarm = require('webrtc-swarm')
 
+let hash, hub, key, sw
 let fileReadStream = null
-let hash, key, hub, sw
 let peers = []
 
+attachListeners()
 initialize()
-new Clipboard('.btn') // eslint-disable-line
 
-window.onbeforeunload = x => reset()
+function attachListeners () {
+  new Clipboard('.btn') // eslint-disable-line
 
-$('a.back').click(function () {
-  $('#total-downloads').remove()
-  $('*[class*="peer"]').remove()
-  $('#send-input').replaceWith(function () {
-    return $(this).clone() // reinitialize the hidden file input
+  window.onbeforeunload = x => reset()
+
+  $(document).on('change', '#send-input', e => {
+    // the user selected a file and wants to send it
+    window.location.hash = '#'
+    $('.url').val(`${window.location.origin}/#${key}`)
+    $('body').attr('class', 'send')
+    fileReadStream = new FileReadStream(
+      e.target.files[0],
+      { fields: ['name', 'size', 'type'] }
+    )
+    step(2)
   })
-  reset()
-})
 
-$(document).on('change', '#send-input', e => {
-  // the user selected a file and wants to send it
-  window.location.hash = '#'
-  $('.url').val(`${window.location.origin}/#${key}`)
-  $('body').attr('class', 'send')
-  fileReadStream = new FileReadStream(
-    e.target.files[0],
-    { fields: ['name', 'size', 'type'] }
-  )
-  step(2)
-})
+  $('a.back').click(function () {
+    $('#total-downloads').remove()
+    $('*[class*="peer"]').remove()
+    $('#send-input').replaceWith(function () {
+      return $(this).clone() // reinitialize the hidden file input
+    })
+    reset()
+  })
+}
 
 function initialize () {
   step(1)
@@ -70,14 +74,6 @@ function initialize () {
   handlePeers()
 }
 
-function reset () {
-  peers.forEach(peer => peer.destroy())
-  peers = []
-  hub.close()
-  sw.close()
-  initialize()
-}
-
 function handlePeers () {
   sw.on('peer', peer => {
     peers.push(peer)
@@ -104,6 +100,14 @@ function handlePeers () {
       step(3)
     })
   })
+}
+
+function reset () {
+  peers.forEach(peer => peer.destroy())
+  peers = []
+  hub.close()
+  sw.close()
+  initialize()
 }
 
 function bootAnimation () {
