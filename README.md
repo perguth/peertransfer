@@ -3,8 +3,8 @@
 In-browser secure P2P-filetransfer in *three simple steps:*
 
 1. Select the file you want to send.
-- Open the generated link on other PCs.
-- Download over a **direct (as in peer-to-peer)** and **end-to-end encrypted** line.
+2. Open the generated link on other PCs.
+3. Download over a **direct (as in peer-to-peer)** and **end-to-end encrypted** line.
 
 *Thus the file will only be available for download as long as the sender keeps his browser tab open.*
 
