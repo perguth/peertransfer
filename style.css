@@ -34,7 +34,7 @@ body {
   left: 0;
   transition: top 0.4s;
 }
-#stage>div {
+#stage > div {
   /* The step divs */
   height: 100%;
   position: relative;
@@ -95,7 +95,7 @@ body.receive .if-receive {
   display: block;
 }
 
-/* Button styles */
+/* buttons */
 
 .button {
   width: 240px;
@@ -126,65 +126,25 @@ body.receive .if-receive {
   vertical-align: middle;
   padding-right: 13px;
 }
-.button.green {
-  background-color: #92cd84;
-}
-.button.magenta {
-  background-color: #e661b7;
-}
-.button.blue {
-  background-color: #798dd7;
-}
-.button.red {
-  background-color: #c15645;
-}
-
-/* Styles for specific buttons */
-
-.button.browse {
-  width: 180px;
-}
-.button.process {
-  width: 190px;
-}
-.button.download {
-  width: 216px;
-}
-.button.upload {
-  width: 180px;
-}
-.button.send::before {
-  background-position: 0 0;
-}
-.button.receive::before {
-  background-position: -96px 0;
-}
-.button.browse::before {
-  background-position: -240px 0;
-}
-.button.process::before {
-  background-position: -142px 0;
-}
-.button.download::before {
-  background-position: -48px 0;
-}
-.button.upload::before {
-  background-position: -190px 0;
-}
+.button.green { background-color: #92cd84; }
+.button.magenta { background-color: #e661b7; }
+.button.blue { background-color: #798dd7; }
+.button.red { background-color: #c15645; }
+.button.browse { width: 180px; }
+.button.process { width: 190px; }
+.button.download { width: 216px; }
+.button.upload { width: 180px; }
+.button.send::before { background-position: 0 0; }
+.button.receive::before { background-position: -96px 0; }
+.button.browse::before { background-position: -240px 0; }
+.button.process::before { background-position: -142px 0; }
+.button.download::before { background-position: -48px 0; }
+.button.upload::before { background-position: -190px 0; }
 .button {
   transition: background-color 0.2s, width 0.3s ease-out;
 }
-.button.requesting-peer {
-  width: 436px;
-  background-repeat: no-repeat;
-  background-position: -436px 0;
-  background-image: url(green-big.png);
-  opacity: 0;
-  transition: opacity .25s ease-in-out;
-  cursor: default;
-}
 
-/* The steps */
+/* steps */
 
 #step1 {
   background-color: #75c0d1;
@@ -226,7 +186,7 @@ body.receive #step2 {
   margin-top: -90px;
 }
 
-/* The Demo Footer */
+/* footer */
 
 footer {
   width: 770px;
@@ -242,53 +202,6 @@ footer {
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.4);
   z-index: 1;
   opacity: 0;
-}
-footer a.tz {
-  font-weight: normal;
-  font-size: 16px !important;
-  text-decoration: none !important;
-  display: block;
-  margin-right: 300px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #bfbfbf !important;
-  z-index: 1;
-}
-footer a.tz:before {
-  content: '';
-  background: url('http://cdn.tutorialzine.com/misc/enhance/v2_footer_bg.png') no-repeat 0 -53px;
-  width: 138px;
-  height: 20px;
-  display: inline-block;
-  position: relative;
-  bottom: -3px;
-}
-footer .close {
-  position: absolute;
-  cursor: pointer;
-  width: 8px;
-  height: 8px;
-  background: url('http://cdn.tutorialzine.com/misc/enhance/v2_footer_bg.png') no-repeat 0 0px;
-  top: 10px;
-  right: 10px;
-  z-index: 3;
-}
-footer #tzine-actions {
-  position: absolute;
-  top: 8px;
-  width: 500px;
-  right: 50%;
-  margin-right: -650px;
-  text-align: right;
-  z-index: 2;
-}
-footer #tzine-actions iframe {
-  display: inline-block;
-  height: 21px;
-  width: 95px;
-  position: relative;
-  float: left;
-  margin-top: 11px;
 }
 
 /* Misc */
