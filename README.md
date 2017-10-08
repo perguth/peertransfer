@@ -12,8 +12,8 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 ## Features
 - [x] Uses WebRTC for peer-to-peer data connection
-- [x] End-to-end encryption
-- [x] Authenticate incoming connections
+- [x] End-to-end encryption (provided by WebRTC)
+- [x] Authenticate incoming connections (to protect against IP leakages to the server that is used while initiating the p2p connections)
 - [x] Display progress for both sender and receiver
 - [x] Allow multiple transfers at once
 - [x] Cache encrypted data for successive transfers in one session
@@ -32,15 +32,6 @@ git checkout gh-pages
 # etc. can be accessed through the web.
 ```
 
-
-# Tech in focus
-- WebRTC wrapped by [PeerJS](https://github.com/peers/peerjs).
-- [Stanford Javascript Crypto Library](https://github.com/bitwiseshiftleft/sjcl)
-
-# Influences & sources
-- HTML/CSS forked from [Creating a File Encryption App with JavaScript](http://tutorialzine.com/2013/11/javascript-file-encrypter/).
-- Code inspired by [oro-chat](https://github.com/MyBoon/oro-chat).
-
 # Related &|| noteable
 - **[My presentation slides](https://slides.com/pguth/peertransfer)**
 - **A variation of peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)**
@@ -50,3 +41,4 @@ git checkout gh-pages
 - [WebTorrent](https://github.com/feross/webtorrent) "Streaming torrent client for node & the browser"
 - [OnionShare](https://github.com/micahflee/onionshare) "Securely and anonymously share a file of any size"
 - [FilePizza](https://github.com/kern/filepizza) "Peer-to-peer file transfers in your browser"
+- HTML/CSS of this project are forked from [Creating a File Encryption App with JavaScript](http://tutorialzine.com/2013/11/javascript-file-encrypter/) ([license](https://tutorialzine.com/license): *"You can use, modify and build upon our code for your (or your clients’) personal and commercial projects with no attribution necessary."*).
