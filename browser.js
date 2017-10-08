@@ -90,7 +90,6 @@ function handlePeers () {
       $('#active-transfers').html(++transfers.active)
       peer.on('close', x => {
         $('#active-transfers').html(--transfers.active)
-        fileReadStream.end()
       })
       fileReadStream.on('end', x => {
         $('#finished-transfers').html(++transfers.finished)
@@ -130,6 +129,8 @@ function reset () {
   peers = []
   hub.close()
   sw.close()
+  $('#active-transfers').html(0)
+  $('#finished-transfers').html(0)
 }
 
 function bootAnimation () {
