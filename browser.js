@@ -8,8 +8,7 @@ let FileWriteStream = require('namedfilestream/write')
 let signalhub = require('signalhub')
 let swarm = require('webrtc-swarm')
 
-let hash, hub, key, sw
-let fileReadStream = null
+let file, hash, hub, key, sw, transfers
 let peers = []
 
 attachListeners()
@@ -25,10 +24,7 @@ function attachListeners () {
     window.location.hash = '#'
     $('.url').val(`${window.location.origin}/#${key}`)
     $('body').attr('class', 'send')
-    fileReadStream = new FileReadStream(
-      e.target.files[0],
-      { fields: ['name', 'size', 'type'] }
-    )
+    file = e.target.files[0]
     step(2)
   })
 
@@ -39,15 +35,20 @@ function attachListeners () {
       return $(this).clone() // reinitialize the hidden file input
     })
     reset()
+    initialize()
   })
 }
 
 function initialize () {
   step(1)
+  transfers = {
+    active: 0,
+    finished: 0
+  }
   hash = window.location.hash.substr(1)
-  if (!hash) bootAnimation()
   key = hash || randomHex('24')
-  hub = signalhub(`peertransfer-${key}`.substr(0, 7), [
+  if (!hash) bootAnimation()
+  hub = signalhub(`peertransfer-${key.substr(0, 8)}`, [
     // 'https://signalhub.mafintosh.com/', // bug in lib?!
     'https://signalhub.perguth.de:65300/'
   ])
@@ -76,24 +77,45 @@ function initialize () {
 function handlePeers () {
   sw.on('peer', peer => {
     peers.push(peer)
+
+    // sending file
     if (!hash) {
-      // sending files
       step(2)
+      let fileReadStream = new FileReadStream(
+        file,
+        { fields: ['name', 'size', 'type'] }
+      )
+      $('#active-transfers').html(++transfers.active)
+      peer.on('close', x => {
+        $('#active-transfers').html(--transfers.active)
+        fileReadStream.end()
+      })
       fileReadStream.on('end', x => {
-        peer.destroy()
-        peers.pop(peer)
+        $('#finished-transfers').html(++transfers.finished)
       })
       fileReadStream.pipe(peer)
       return
     }
-    // receiving files
+
+    // receiving file
     let writeStream = new FileWriteStream()
-    writeStream.on('finish', x => {
-      sw.close()
-      peer.destroy()
-      peers.pop(peer)
+    let fileMeta = {}
+    writeStream.on('header', meta => {
+      sw.removeAllListeners()
+      $('body').attr('class', 'receive')
+      step(2)
+      var downloadBar = $('#step2 .button')
+      downloadBar.css('background-repeat', 'no-repeat')
+      downloadBar.css('background-position', '-240px 0')
+      downloadBar.css('background-image', 'url(assets/green.png)')
+      fileMeta = meta
+    })
+    writeStream.on('progress', progress => {
+      if (progress >= fileMeta.size) writeStream.end()
+      $('#step2 .button').css('background-position', `-${Math.ceil(240 - progress / fileMeta.size * 240)}px 0`)
     })
     peer.pipe(writeStream).on('file', file => {
+      reset()
       let objectUrl = window.URL.createObjectURL(file)
       $('#step3 a').attr('href', objectUrl).attr('download', file.name)
       step(3)
@@ -106,7 +128,6 @@ function reset () {
   peers = []
   hub.close()
   sw.close()
-  initialize()
 }
 
 function bootAnimation () {
