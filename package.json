@@ -17,6 +17,7 @@
     "deploy": ""
   },
   "dependencies": {
+    "clipboard": "^1.7.1",
     "crypto-js": "^3.1.9-1",
     "feature": "^1.0.1",
     "jquery": "^3.2.1",

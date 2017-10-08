@@ -4,6 +4,7 @@
   <title>Peertransfer</title>
   <meta name=viewport content='width=device-width, initial-scale=1'>
   <link href=style.css rel=stylesheet>
+  <link href=assets/clipboard.css rel=stylesheet>
 </head>
 <body>
   <!-- UI based on http://tutorialzine.com/2013/11/javascript-file-encrypter/ -->
@@ -22,7 +23,17 @@
 
     <div id=step2>
       <div class='content if-send'>
-        <input type=url class=url upload onClick=this.select(); placeholder='... just a second...' readonly><br>
+        <div class="input-group">
+          <input type=url class=url upload onClick=this.select(); readonly id=connection-id
+            ${!state.dashboard.connectionId ? 'disabled' : 'readonly'}
+            value="${window.location.href + '#/join/' + state.dashboard.connectionId}"
+          >
+          <span class="input-group-button">
+            <button class="btn" data-clipboard-target=#connection-id>
+              <img class="clippy" src=assets/clippy.svg alt="Copy to clipboard">
+            </button>
+          </span>
+        </div>
         <small>Open this URL on any number of other computers to receive the file there.</small>
         <br><br class=request-activity>
       </div>

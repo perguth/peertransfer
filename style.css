@@ -195,6 +195,12 @@ body.send #step2 {
 body.receive #step2 {
   background-color: #d5d788;
 }
+.input-group {
+  width: 426px !important;
+  margin: 12px auto 10px;
+  height: 62px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.05);
+}
 #step2 input[type=url] {
   background-color: #fff;
   border: none;
@@ -205,9 +211,7 @@ body.receive #step2 {
   display: inline-block;
   outline: none;
   width: 426px;
-  margin: 12px 0 10px;
   border-radius: 2px;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.05);
   font-size: 36px;
   color: #555;
 }

@@ -6,65 +6,87 @@ let FileWriteStream = require('namedfilestream/write')
 let crypto = require('crypto')
 let aes = require('crypto-js').AES
 let enc = require('crypto-js').enc.Utf8
+let Clipboard = require('clipboard')
 
 let fileReadStream = null
-let hash = window.location.hash.substr(1)
-let key
-let hub
-let sw
+let hash, key, hub, sw
 let peers = []
 
 initialize()
+
+window.onbeforeunload = x => {
+  console.log('cleanup  ')
+  reset()
+}
 
 $('a.back').click(function () {
   $('#total-downloads').remove()
   $('*[class*="peer"]').remove()
   $('#send-input').replaceWith(function () {
-    return $(this).clone() // Reinitialize the hidden file input
+    return $(this).clone() // reinitialize the hidden file input
   })
   reset()
 })
 
-$('#step1').on('change', '#send-input', e => {
+$(document).on('change', '#send-input', e => {
+  // the user selected a file and wants to send it
   window.location.hash = '#'
-  $('.url').val(`${window.location.href.toString()}${key}`)
+  $('.url').val(`${window.location.origin}/#${key}`)
   $('body').attr('class', 'send')
-  fileReadStream = new FileReadStream(e.target.files[0], {fields: ['name', 'size', 'type']})
+  fileReadStream = new FileReadStream(
+    e.target.files[0],
+    { fields: ['name', 'size', 'type'] }
+  )
   step(2)
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+  new Clipboard('.btn') // eslint-disable-line
 })
 
 function initialize () {
   step(1)
+  hash = window.location.hash.substr(1)
   if (!hash) bootAnimation()
   key = hash || randomHex('24')
-  hub = signalhub(`peertransfer-${key}`.substr(0, 7), ['https://signalhub.perguth.de:65300/'])
+  hub = signalhub(`peertransfer-${key}`.substr(0, 7), [
+    'https://signalhub.perguth.de:65300/',
+    'https://signalhub.mafintosh.com/'
+  ])
   sw = swarm(hub, {
-    wrap: data => {
-      if (!data.signal) return data
+    // The goal here is to protect the signaling data that's beeing exchanged
+    // between peers on WebRTC connection establishment. It includes available
+    // IP addresses (could be local ones!) among other things.
+    wrap: (data, channel) => {
+      if (!data.signal || channel === '/all') return data
       data.signal = JSON.stringify(data.signal)
       data.signal = aes.encrypt(data.signal, key).toString()
       return data
     },
     unwrap: data => {
-      if (!data.signal || data.from === sw.me) return data
+      if (!data.signal) return data
       data.signal = (aes.decrypt(data.signal, key)).toString(enc)
-      try {
-        data.signal = JSON.parse(data.signal)
-      } catch (e) {
-        console.error(e)
-        return
-      }
+      data.signal = JSON.parse(data.signal)
       return data
     }
   })
   handlePeers()
 }
 
+function reset () {
+  peers.forEach(peer => peer.destroy())
+  peers = []
+  hub.close()
+  sw.close()
+  initialize()
+}
+
 function handlePeers () {
   sw.on('peer', peer => {
     peers.push(peer)
     if (!hash) {
-      step(2) // sending
+      // sending files
+      step(2)
       fileReadStream.on('end', x => {
         peer.destroy()
         peers.pop(peer)
@@ -72,6 +94,7 @@ function handlePeers () {
       fileReadStream.pipe(peer)
       return
     }
+    // receiving files
     let writeStream = new FileWriteStream()
     writeStream.on('finish', x => {
       sw.close()
@@ -92,7 +115,6 @@ function bootAnimation () {
   button.click(function () {
     $('#send-input').click()
   })
-
   setTimeout(function () {
     button.attr('class', 'button green send')
     button.html('send a file')
@@ -106,7 +128,7 @@ function step (i) {
   let stage = $('#stage')
   let back = $('a.back')
   if (i === 1) back.fadeOut()
-  else back.fadeIn()
+  else $('a.back').fadeIn()
   stage.css('top', (-(i - 1) * 100) + '%')
 }
 
@@ -115,12 +137,4 @@ function randomHex (len) {
   return crypto.randomBytes(Math.ceil(len / 2))
     .toString('hex')
     .slice(0, len)
-}
-
-function reset () {
-  peers.forEach(peer => peer.destroy())
-  peers = []
-  hub.close()
-  sw.close()
-  initialize()
 }
