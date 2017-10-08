@@ -10,14 +10,9 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 [![peertransfer](https://cdn.pbrd.co/images/1nDsnhLI.png)](https://pguth.github.io/peertransfer/)
 
-## Features
 - [x] Uses WebRTC for peer-to-peer data connection
 - [x] End-to-end encryption (provided by WebRTC)
-- [x] Authenticate incoming connections (to protect against IP leakages to the server that is used while initiating the p2p connections)
-- [x] Display progress for both sender and receiver
-- [x] Allow multiple transfers at once
-- [x] Cache encrypted data for successive transfers in one session
-- [x] Stop sending if the receiver becomes unavailable
+- [x] Authenticate connections (to protect against IP leakages to the server that is used while initiating WebRTC)
 
 # Install
 
