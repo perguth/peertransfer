@@ -1,3 +1,0 @@
-Images
-======
-- http://thenounproject.com/
