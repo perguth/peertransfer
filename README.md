@@ -16,15 +16,12 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 # Install
 
-Simply pull the `gh-pages` branch like so. Peertransfer can be used on any (managed) hoster.
+A hosted instance of Peertransfer is available at https://pguth.github.io/peertransfer/
 
 ```bash
 git clone https://github.com/pguth/peertransfer.git
 cd peertransfer
-git checkout gh-pages
-
-# done and works right out the box if `peertransfer/index.html`
-# etc. can be accessed through the web.
+npm start
 ```
 
 # Related &|| noteable
