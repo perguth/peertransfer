@@ -19,9 +19,11 @@ function attachListeners () {
 
   window.onbeforeunload = x => reset()
 
+  let button = $('#step1 .button')
+  button.click(x => $('#send-input').click())
+
   $(document).on('change', '#send-input', e => {
     // the user selected a file and wants to send it
-    window.location.hash = '#'
     $('.url').val(`${window.location.origin + window.location.pathname}#${key}`)
     $('body').attr('class', 'send')
     file = e.target.files[0]
@@ -29,11 +31,10 @@ function attachListeners () {
   })
 
   $('a.back').click(function () {
-    $('#total-downloads').remove()
-    $('*[class*="peer"]').remove()
-    $('#send-input').replaceWith(function () {
-      return $(this).clone() // reinitialize the hidden file input
-    })
+    window.location.hash = ''
+    button.off('click')
+    $('#send-input').replaceWith(function () { return $(this).clone() })
+    button.click(x => $('#send-input').click())
     reset()
     initialize()
   })
@@ -48,6 +49,7 @@ function initialize () {
   hash = window.location.hash.substr(1)
   key = hash || randomHex('24')
   if (!hash) bootAnimation()
+
   hub = signalhub(`peertransfer-${key.substr(0, 8)}`, [
     // 'https://signalhub.mafintosh.com/', // bug in lib?!
     'https://signalhub.perguth.de:65300/'
@@ -132,10 +134,7 @@ function reset () {
 
 function bootAnimation () {
   let button = $('#step1 .button')
-  button.css('cursor', 'pointer')
-  button.click(function () {
-    $('#send-input').click()
-  })
+  button.css('cursor', 'default')
   setTimeout(function () {
     button.attr('class', 'button green send')
     button.html('send a file')
