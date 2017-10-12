@@ -1,6 +1,6 @@
 {
   "name": "peertransfer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "In-browser P2P-filetransfer in three simple steps: 1) Drop files into your browser. 2) Open the generated link on the second PC. 3) Download the files over a direct and encrypted line.",
   "homepage": "https://github.com/pguth/peertransfer",
   "keywords": [
