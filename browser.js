@@ -119,6 +119,7 @@ function handlePeers () {
       reset()
       let objectUrl = window.URL.createObjectURL(file)
       $('#step3 a').attr('href', objectUrl).attr('download', file.name)
+      setTimeout(x => document.getElementById('downloadLink').click(), 400)
       step(3)
     })
   })
