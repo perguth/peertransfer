@@ -8,7 +8,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 *Thus the file will only be available for download as long as the sender keeps his browser tab open.*
 
-[![peertransfer](https://cdn.pbrd.co/images/1nDsnhLI.png)](https://pguth.github.io/peertransfer/)
+[![peertransfer](assets/appshot.171012.png)](https://pguth.github.io/peertransfer/)
 
 - [x] Data is sent peer-to-peer
 - [x] Data is transferred using end-to-end encryption (due to WebRTC)
