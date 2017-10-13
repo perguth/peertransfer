@@ -24,7 +24,7 @@ cd peertransfer
 npm start
 ```
 
-# Related &|| noteable
+# Related
 - **[My presentation slides](https://slides.com/pguth/peertransfer)**
 - **A variation of peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)**
 - [sharedrop](https://github.com/cowbell/sharedrop) "HTML5 clone of Apple's AirDrop - easy P2P file transfer powered by WebRTC"
