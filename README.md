@@ -16,7 +16,7 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 # Install
 
-A hosted instance of Peertransfer is available at https://pguth.github.io/peertransfer/
+A hosted instance of Peertransfer is available at https://perguth.github.io/peertransfer/
 
 ```bash
 git clone https://github.com/pguth/peertransfer.git
