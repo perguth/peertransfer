@@ -7,6 +7,7 @@ let FileReadStream = require('namedfilestream/read')
 let FileWriteStream = require('namedfilestream/write')
 let signalhub = require('signalhub')
 let swarm = require('webrtc-swarm')
+let version = 'v' + require('./package.json').version
 
 let file, hash, hub, key, sw, transfers
 let peers = []
@@ -16,6 +17,7 @@ let hubs = process.env.NODE_ENV === 'production' ? [
 ] : 'http://localhost:7000'
 hubs = process.env.HUB_URLS ? process.env.HUB_URLS.split(',') : hubs
 
+$('#version').html(version)
 attachListeners()
 initialize()
 
