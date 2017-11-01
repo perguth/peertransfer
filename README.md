@@ -28,7 +28,7 @@ NODE_EVN=production npm start
 
 # Related
 - **[My presentation slides](https://slides.com/pguth/peertransfer)**
-- **A variation of peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)**
+- **A variation of Peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)**
 - [sharedrop](https://github.com/cowbell/sharedrop) "HTML5 clone of Apple's AirDrop - easy P2P file transfer powered by WebRTC"
 - [ShareFest](https://github.com/Peer5/ShareFest) "Web based p2p file sharing built on WebRTC Data Channels API"
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/) "A demo of using WebRTC with no signaling server."
