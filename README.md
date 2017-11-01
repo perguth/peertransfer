@@ -1,10 +1,10 @@
 # Peertransfer
 
-In-browser secure P2P-filetransfer in *three simple steps:*
+In-browser secure peer-to-peer filetransfer in *three simple steps:*
 
 1. Select the file you want to send.
 2. Open the generated link on other PCs.
-3. Download over a **direct (as in peer-to-peer)** and **end-to-end encrypted** line.
+3. Download over a **direct**, **authenticated** and **end-to-end encrypted** line.
 
 *Thus the file will only be available for download as long as the sender keeps his browser tab open.*
 
@@ -28,7 +28,7 @@ NODE_EVN=production npm start
 
 # Related
 - **[My presentation slides](https://slides.com/pguth/peertransfer)**
-- **A variation of peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)**
+- **A variation of Peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)**
 - [sharedrop](https://github.com/cowbell/sharedrop) "HTML5 clone of Apple's AirDrop - easy P2P file transfer powered by WebRTC"
 - [ShareFest](https://github.com/Peer5/ShareFest) "Web based p2p file sharing built on WebRTC Data Channels API"
 - [serverless-webrtc](https://github.com/cjb/serverless-webrtc/) "A demo of using WebRTC with no signaling server."
