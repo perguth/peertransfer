@@ -10,6 +10,8 @@ In-browser secure P2P-filetransfer in *three simple steps:*
 
 [![peertransfer](assets/appshot.171012.png)](https://pguth.github.io/peertransfer/)
 
+## Features
+
 - [x] Data is sent directly peer-to-peer.
 - [x] Data is transferred using end-to-end encryption (due to WebRTC).
 - [x] The messages that are relayed by a server to initiate the p2p WebRTC connections are encrypted (to protect against IP leakages and man-in-the-middle attacks while initiating WebRTC).
