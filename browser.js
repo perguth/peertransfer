@@ -10,6 +10,11 @@ let swarm = require('webrtc-swarm')
 
 let file, hash, hub, key, sw, transfers
 let peers = []
+let hubs = process.env.NODE_ENV === 'production' ? [
+  // 'https://signalhub.mafintosh.com/', // bug in lib
+  'https://signalhub.perguth.de:65300/'
+] : 'http://localhost:7000'
+hubs = process.env.HUB_URLS ? process.env.HUB_URLS.split(',') : hubs
 
 attachListeners()
 initialize()
@@ -50,10 +55,7 @@ function initialize () {
   key = hash || randomHex('24')
   if (!hash) bootAnimation()
 
-  hub = signalhub(`peertransfer-${key.substr(0, 8)}`, [
-    // 'https://signalhub.mafintosh.com/', // bug in lib?!
-    'https://signalhub.perguth.de:65300/'
-  ])
+  hub = signalhub(`peertransfer-${key.substr(0, 8)}`, hubs)
   sw = swarm(hub, {
     // The goal here is to protect the signaling data that's beeing exchanged
     // between peers on WebRTC connection establishment. It includes available
