@@ -23,7 +23,7 @@ A hosted instance of Peertransfer is available at https://perguth.github.io/peer
 ```bash
 git clone https://github.com/pguth/peertransfer.git
 cd peertransfer
-NODE_EVN=production npm start
+NODE_ENV=production npm start
 ```
 
 # Related

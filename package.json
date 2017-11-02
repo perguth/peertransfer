@@ -13,7 +13,7 @@
   "scripts": {
     "test": "standard && tape test.js",
     "start": "[[ $NODE_EVN = production ]] && npm run prod || npm run dev",
-    "build": "NODE_EVN=production mkdir -p build && browserify browser.js -o build/bundle.js -t envify -t [babelify --presets [es2015]] && cp -r index.html style.css assets build/",
+    "build": "export NODE_ENV=production; mkdir -p build && browserify browser.js -o build/bundle.js -t [envify purge] -t babelify --presets [es2015] && cp -r index.html style.css assets build/",
     "dev": "signalhub listen -p 7000 & budo --live --host localhost index.js:bundle.js -- -t envify",
     "prod": "budo index.js:bundle.js"
   },
