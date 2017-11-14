@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
-    "babelify": "^7.3.0",
+    "babelify": "^8.0.0",
     "envify": "^4.1.0",
     "standard": "^10.0.3",
     "tape": "^4.8.0"
