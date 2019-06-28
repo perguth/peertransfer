@@ -1,0 +1,61 @@
+<!doctype html>
+<meta charset=utf-8>
+<title>Peertransfer</title>
+<meta name=viewport content='width=device-width, initial-scale=1'>
+<link href=style.css rel=stylesheet>
+<link href=assets/clipboard.css rel=stylesheet>
+<link rel='shortcut icon' href=assets/favicon.png>
+
+<!-- UI based on http://tutorialzine.com/2013/11/javascript-file-encrypter/ -->
+
+<a class='back'></a>
+
+<div id=stage>
+  <div id=step1>
+    <div class='content'>
+      <a class='button send magenta'>getting ready</a>
+      <small>Send files peer-to-peer and end-to-end encrypted.</small><br>
+      <small>Host it yourself! <a href=https://github.com/pguth/peertransfer class='github'>Github</a> has the source.</small>
+      <br>
+      <small style='opacity: 0.5;'><code id=version></code></small>
+      <input type=file id=send-input />
+    </div>
+  </div>
+
+  <div id=step2>
+    <div class='content if-send'>
+      <div class="input-group">
+        <input type=url class=url upload onClick=this.select() readonly id=connection-id
+          ${!state.dashboard.connectionId ? 'disabled' : 'readonly'}
+          value="${window.location.href + '#/join/' + state.dashboard.connectionId}"
+        >
+        <span class="input-group-button">
+          <button class="btn" data-clipboard-target=#connection-id>
+            <img class="clippy" src=assets/clippy.svg alt="Copy to clipboard">
+          </button>
+        </span>
+      </div>
+      <div id=transfer-info>
+        Active transfers: <span id=active-transfers>0</span> -
+        Total downloads: <span id=finished-transfers>0</span>
+      </div>
+    </div>
+
+
+    <div class='content if-receive'>
+      <a class='button receive red'>Receiving...</a>
+      <!--<small>The download dialog will open automatically.</small>-->
+    </div>
+  </div>
+
+  <div id=step3>
+    <div class='content'>
+      <a class='button browse blue' id=downloadLink>Et voilà!</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+</footer>
+
+<script src=bundle.js></script>

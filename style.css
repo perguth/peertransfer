@@ -1,0 +1,229 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  overflow: hidden;
+}
+a, a:visited {
+  outline: none;
+  color: #389dc1;
+}
+a:hover {
+  text-decoration: none;
+}
+section, footer, header, aside {
+  display: block;
+}
+
+/* The main page elements */
+
+body {
+  font: 15px/1.3 'Raleway', sans-serif;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+}
+#stage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: top 0.4s;
+}
+#stage > div {
+  /* The step divs */
+  height: 100%;
+  position: relative;
+}
+#stage h1 {
+  font-weight: normal;
+  font-size: 48px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 60px;
+}
+#stage h2 {
+  font-weight: normal;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: -40px 0 45px;
+  font-style: italic;
+}
+.content {
+  position: absolute;
+  text-align: center;
+  left: 0;
+  top: 52%;
+  width: 100%;
+}
+.content input[type=file] {
+  display: none;
+}
+a.back {
+  width: 32px;
+  height: 32px;
+  background: url(assets/icons.svg) no-repeat -192px 0;
+  position: absolute;
+  cursor: pointer;
+  top: 50px;
+  left: 50%;
+  z-index: 10;
+  opacity: 0.8;
+  margin-left: -16px;
+  display: none;
+}
+a.back:hover {
+  opacity: 1;
+}
+input {
+  font-family: Arial;
+}
+
+/* Conditional classes */
+
+[class*="if-"] {
+  display: none;
+}
+body.send .if-send {
+  display: block;
+}
+body.receive .if-receive {
+  display: block;
+}
+
+/* buttons */
+
+.button {
+  width: 240px;
+  height: 70px;
+  text-align: center;
+  text-decoration: none !important;
+  color: #fff !important;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 1px;
+  display: block;
+  line-height: 70px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  font-size: 18px;
+  margin: 10px auto;
+  opacity: 0.9;
+}
+.button:hover {
+  opacity: 1;
+}
+.button::before {
+  content: '';
+  background: url(assets/icons.svg) no-repeat;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+  padding-right: 13px;
+}
+.button.green { background-color: #92cd84; }
+.button.magenta { background-color: #e661b7; }
+.button.blue { background-color: #798dd7; }
+.button.red { background-color: #c15645; }
+.button.browse { width: 180px; }
+.button.process { width: 190px; }
+.button.download { width: 216px; }
+.button.upload { width: 180px; }
+.button.send::before { background-position: 0 0; }
+.button.receive::before { background-position: -96px 0; }
+.button.browse::before { background-position: -240px 0; }
+.button.process::before { background-position: -142px 0; }
+.button.download::before { background-position: -48px 0; }
+.button.upload::before { background-position: -190px 0; }
+.button {
+  transition: background-color 0.2s, width 0.3s ease-out;
+}
+
+/* steps */
+
+#step1 {
+  background-color: #75c0d1;
+}
+body.send #step2 {
+  background-color: #9ad58c;
+}
+body.receive #step2 {
+  background-color: #d5d788;
+}
+.input-group {
+  width: 426px !important;
+  margin: 12px auto 10px;
+  height: 62px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.05);
+}
+#step2 input[type=url] {
+  background-color: #fff;
+  border: none;
+  padding: 8px 10px;
+  padding-right: 0px;
+  line-height: 1;
+  font: inherit;
+  display: inline-block;
+  outline: none;
+  width: 426px;
+  border-radius: 2px;
+  font-size: 36px;
+  color: #555;
+}
+#step2 .button {
+  cursor: default;
+  opacity: 1;
+}
+#step3 {
+  background-color: #9ad58c;
+}
+.content {
+  margin-top: -90px;
+}
+
+/* footer */
+
+footer {
+  width: 770px;
+  font: normal 16px Arial, Helvetica, sans-serif;
+  padding: 15px 35px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-left: -420px;
+  background-color: #1f1f1f;
+  background-image: linear-gradient(to bottom, #1f1f1f, #101010);
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  opacity: 0;
+}
+
+/* Misc */
+
+a.github {
+  opacity: 0.5;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.github:hover {
+  text-decoration: underline;
+}
+a.github::before {
+  content: '';
+  background: url(assets/github.png) no-repeat;
+  background-size: 10px;
+  display: inline-block;
+  width: 12px;
+  height: 10px;
+  margin-left: 2px;
+}
+#total-downloads {
+  font-weight: bold;
+}
