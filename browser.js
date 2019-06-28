@@ -13,7 +13,7 @@ let file, hash, hub, key, sw, transfers
 let peers = []
 let hubs = process.env.NODE_ENV === 'production' ? [
   // 'https://signalhub.mafintosh.com/', // bug in lib
-  'https://signalhub.perguth.de:65300/'
+  'https://signalhub.thingylabs.io/'
 ] : 'http://localhost:7000'
 hubs = process.env.HUB_URLS ? process.env.HUB_URLS.split(',') : hubs
 
