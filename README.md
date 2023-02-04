@@ -1,7 +1,5 @@
 # Peertransfer
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/perguth/peertransfer.svg)](https://greenkeeper.io/)
-
 In-browser secure peer-to-peer filetransfer in *three simple steps:*
 
 1. Select the file you want to send.
