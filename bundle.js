@@ -57154,7 +57154,7 @@ function extend() {
 },{}],324:[function(require,module,exports){
 module.exports={
   "name": "peertransfer",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "In-browser P2P-filetransfer in three simple steps: 1) Drop files into your browser. 2) Open the generated link on the second PC. 3) Download the files over a direct and encrypted line.",
   "homepage": "https://github.com/perguth/peertransfer",
   "keywords": [
