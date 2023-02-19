@@ -12,7 +12,9 @@
   "browser": "browser.js",
   "scripts": {
     "test": "standard && tape test.js",
-    "start": "[[ $NODE_EVN = production ]] && npm run prod || npm run dev",
+    "start": "per-env",
+    "start:development": "npm run dev",
+    "start:production": "npm run prod",
     "build": "export NODE_ENV=production; mkdir -p build && browserify browser.js -o build/bundle.js -t [envify purge] -t babelify --presets [es2015] && cp -r index.html style.css assets build/",
     "dev": "signalhub listen -p 7000 & budo --live --host localhost index.js:bundle.js -- -t envify",
     "prod": "budo index.js:bundle.js"
@@ -24,6 +26,7 @@
     "feature": "^1.1.0",
     "jquery": "^3.6.3",
     "namedfilestream": "^1.1.0",
+    "per-env": "^1.0.2",
     "signalhub": "^4.9.0",
     "webrtc-swarm": "^2.9.0"
   },
