@@ -23,8 +23,8 @@ A hosted instance of Peertransfer is available at https://perguth.github.io/peer
 ```bash
 git clone https://github.com/pguth/peertransfer.git
 cd peertransfer
-# You can also set HUB_URLS to a comma separated list of `signalhub` URLs:
 NODE_ENV=production npm install
+# You can also set HUB_URLS to a comma separated list of `signalhub` URLs:
 npm start
 ```
 
