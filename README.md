@@ -28,6 +28,8 @@ NODE_ENV=production npm install
 npm start
 ```
 
+Or you can use `npm run build` to generate static files.
+
 # Related
 - A variation of Peertransfer I wrote: [peermesh](https://github.com/pguth/peermesh)
 - [sharedrop](https://github.com/cowbell/sharedrop) "HTML5 clone of Apple's AirDrop - easy P2P file transfer powered by WebRTC"
